@@ -5,18 +5,18 @@ LDLIBS = -lm
 default: out.txt 
 	cat out.txt 
 
-out.txt: hello   
-	./hello > out.txt 
+out.txt: math   
+	./math > out.txt 
 
-hello: hello.o            
-	$(CC) -o hello hello.o $(LDLIBS) 
+math: math.o            
+	$(CC) $(LDFLAGS)  math.o -o math $(LDLIBS) 
 
-hello.o: hello.c                   
-	$(CC) $(CFLAGS) -c hello.c 
+math.o: math.c                   
+	$(CC) $(CFLAGS) -c $< -o $@
 
 .PHONEY: clean
 clean:                             
-	$(RM) hello.o hello out.txt
+	$(RM) math.o math out.txt
 
 .PHONEY: test
 test:                     
