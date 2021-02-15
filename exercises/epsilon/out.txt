@@ -1,0 +1,38 @@
+Exercise 1 
+The max and min from limit.h are 2147483647 and -2147483648
+My max with a while loop = -2147483648
+My max with a for loop = -2147483648
+My max with a do while = -2147483648
+
+My min with a while loop = 2147483647
+My min with a for loop = -2147483648
+My min with a do while = 2147483647
+
+Exercise iii
+epsilon machine while loops
+double_epsilon = 2.22045e-16
+DBL_EPSILON = 2.22045e-16
+long_double_epsilon = 1.0842e-19
+LDBL_EPSILON = 1.0842e-19
+float_epsilon = 0.000000
+FLT_EPSILON = 0.000000
+epsilon machine for loops
+double_epsilon = 2.22045e-16
+long_double_epsilon = 1.0842e-19
+float_epsilon = 0.000000
+do while loops for epsilon machine
+double_epsilon = 2.22045e-16
+long_double_epsilon = 1.0842e-19
+float_epsilon = 0.000000
+
+Exercise 2
+sum_up_float = 15.403683
+sum_down_float = 17.807919
+exercise iv 
+sum_up_float = 20.966166
+sum_down_float = 19.966166
+Exercise 3
+This has been done in equal.c filehere is an example a=30, b=30, tau=6, epsilon=6
+this gives 0
+here is an example a=25, b=35, tau=4, epsilon=4
+this gives 0
