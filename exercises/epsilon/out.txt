@@ -1,12 +1,12 @@
 Exercise 1 
 The max and min from limit.h are 2147483647 and -2147483648
-My max with a while loop = -2147483648
-My max with a for loop = -2147483648
-My max with a do while = -2147483648
+My max with a while loop = 2147483647
+My max with a for loop = 2147483647
+My max with a do while = 2147483647
 
-My min with a while loop = 2147483647
-My min with a for loop = -2147483648
-My min with a do while = 2147483647
+My min with a while loop = -2147483648
+My min with a for loop = -2147483647
+My min with a do while = -2147483648
 
 Exercise iii
 epsilon machine while loops
@@ -28,6 +28,7 @@ float_epsilon = 0.000000
 Exercise 2
 sum_up_float = 15.403683
 sum_down_float = 17.807919
+Exercise ii - They are different due to its float nature. it can only have a certain number of decimal points and so going big to small it adds same or smaller and this kleads to a difference.
 exercise iv 
 sum_up_float = 20.966166
 sum_down_float = 19.966166

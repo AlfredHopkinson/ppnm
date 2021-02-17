@@ -11,17 +11,17 @@ int main(){
 
 	printf("The max and min from limit.h are %i and %i\n", MAX, MIN);
 
-	int iwhile = (1);
-	int ifor = 1;
-	int ido = 1;
+	int iwhile = (MAX-10);
+	int ifor = MAX-10;
+	int ido = MAX-10;
 
-	while(iwhile+1>1){
+	while(iwhile+1>iwhile){
 		iwhile++;
 		}
-	for(int i=ifor;i+1>1; i++){
+	for(int i=ifor;i+1>i; i++){
 		ifor++;
 	}
-	do{ido++;} while( ido+1>1);
+	do{ido++;} while( ido+1>ido);
 
 
 	printf("My max with a while loop = %i\n",iwhile);
@@ -113,7 +113,9 @@ int main(){
 
 	for(int i=max;i>1;i--){sum_down_float += 1.0f/i;}
 	printf("sum_down_float = %f\n",sum_down_float);
-	
+
+	printf("Exercise ii - They are different due to its float nature. it can only have a certain number of decimal points and so going big to small it adds same or smaller and this kleads to a difference.\n");
+
 
 	printf("exercise iv \n");
 	double sum_double_up = 0;
