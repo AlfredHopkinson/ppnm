@@ -1,5 +1,5 @@
 CFLAGS = $(shell gsl-config --cflags)
-LDLIBS = $(shell gls-config --libs)
+LDLIBS = $(shell gsl-config --libs)
 
 erf.gnuplot.png: test.gpi
 	cat test.gpi | sed 's/pyxplot/gnuplot/' | gnuplot
