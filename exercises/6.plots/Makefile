@@ -2,6 +2,21 @@ CFLAGS = $(shell gsl-config --cflags)
 LDLIBS = $(shell gsl-config --libs)
 
 
+gamma.pyxplot.png: gamma.txt Makefile inputgamma.data.txt
+	echo '\
+	set terminal png;\
+	set output "$@";\
+	set key top left;\
+	set tics out;\
+	set xlabel "x";\
+	set ylabel "y";\
+	set title "Gamma function";\
+	plot \
+	"gamma.txt" using 1:2 with line title "tgamma from math.h",\
+	"inputgamma.data.txt" using 1:2 with points title "tabulated data";\
+	' | pyxplot
+
+
 erf.pyxplot.png: data.txt Makefile input.data.txt
 	echo '\
 	set terminal png;\
@@ -20,9 +35,17 @@ erf.pyxplot.png: data.txt Makefile input.data.txt
 
 test.gpi: erf.pyxplot.png
 
-data.txt: main
+
+
+data.txt : main
 	./$< > $@
+
+gamma.txt : main
+	./$< > $@
+
 main: main.o erf.o
+
+test.gpi: gamma.pyxplot.png
 
 
 .PHONEY: clean
