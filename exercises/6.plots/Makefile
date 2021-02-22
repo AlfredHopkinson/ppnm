@@ -1,10 +1,8 @@
 CFLAGS = $(shell gsl-config --cflags)
 LDLIBS = $(shell gsl-config --libs)
 
-erf.gnuplot.png: test.gpi
-	cat test.gpi | sed 's/pyxplot/gnuplot/' | gnuplot
 
-erf.pyxplot.png: data.txt Makefile tabulated.data.txt
+erf.pyxplot.png: data.txt Makefile input.data.txt
 	echo '\
 	set terminal png;\
 	set output "$@";\
@@ -17,7 +15,7 @@ erf.pyxplot.png: data.txt Makefile tabulated.data.txt
 	"$<" using 1:2 with line title "error function"\
 	,"$<" using 1:3 with line title "gsl-sf-er"\
 	,"$<" using 1:4 with line title "homemade Erf"\
-	,"tabulated.data.txt" using 1:2 with points title "tabulated data"\
+	,"input.data.txt" using 1:2 with points title "tabulated data"\
 	' | tee test.gpi | pyxplot
 
 test.gpi: erf.pyxplot.png
