@@ -11,8 +11,11 @@ gamma.pyxplot.png: gamma.txt Makefile inputgamma.data.txt
 	set xlabel "x";\
 	set ylabel "y";\
 	set title "Gamma Function";\
+	set xrange [-2:5];\
+	set yrange [-20:25];\
 	plot \
 	"gamma.txt" using 1:2 with line title "tgamma"\
+	,"gamma.txt" using 1:3 with line title "stirling function"\
 	,"gamma.txt" using 1:4 with line title "log(tgamma)"\
 	,"inputgamma.data.txt" using 1:2 with points title "tabulated data"\
 	' | tee test.gpi | pyxplot
