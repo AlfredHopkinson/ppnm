@@ -4,6 +4,8 @@ LDLIBS += $(shell /usr/bin/gsl-config --libs)
 
 .PHONEY:all
 
+default: out.txt eigenout.txt
+
 out.txt:main
 	./$< > out.txt
 eigenout.txt: hilbert

@@ -1,0 +1,6 @@
+eigen values are =
+   1.26759  0.0657415 
+The eigen vectors are =
+  0.881675 -0.471858
+  0.471858  0.881675
+
