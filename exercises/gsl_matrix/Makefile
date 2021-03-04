@@ -3,10 +3,12 @@ CFLAGS += $(shell /usr/bin/gsl-config --cflags)
 LDLIBS += $(shell /usr/bin/gsl-config --libs)
 
 .PHONEY:all
-all:out.txt
 
 out.txt:main
 	./$< > out.txt
+eigenout.txt: hilbert
+	./$< > eigenout.txt
+
 
 .PHONEY:clean
 clean:
