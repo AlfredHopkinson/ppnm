@@ -1,0 +1,9 @@
+\
+set terminal png;\
+set output "interpolation.pyxplot.png";\
+set xlabel "x";\
+set ylabel "y";\
+set title "Interpolation";\
+plot \
+"plots.out.txt" using 1:2\
+
