@@ -27,20 +27,42 @@ double linterp(int n, double* x, double* y, double z){
 //analytiucal integration means it will be the area of the square and then the triangle
 double linterp_integ(int n, double* x, double* y, double z){
 
-	int i = binsearch(n,x,z);
-	double area=0;
-	int c=0;
-
-	while(c<=i){
-		area+=y[c-1]*(x[c]-x[c-1])+0.5*(y[c]-y[c-1])*(x[c]-x[c-1]);
-		c++;
+	
+	double integral = 0;
+	int i=0, j=n-1;
+	while(j-i>1){
+		int mid=(i+j)/2;
+		if(z>x[mid]) i=mid;
+		else j=mid;
 	}
+	for(int k=1;k<=i;k++){ 
+		integral+=y[k-1]*(x[k]-x[k-1])+0.5*(y[k]-y[k-1])*(x[k]-x[k-1]);
+		}	
 
 	double yin = linterp(n,x,y,z);
-	area+=y[i]*(z-x[i])+0.5*(yin-y[i])*(z-x[i]);
+	integral +=y[i]*(z-x[i])+0.5*(yin-y[i])*(z-x[i]);
 
-	return area;
+	return integral;
 }
+
+//this didnt work so try simplifying it and using a while loop
+//	for(p=1; p<=i; p++){
+//		if(x[i+1]>x[i]){
+//			double square = (x[i+1]-x[i])*y[i];
+//			double triangle = 0.5*(x[i+1]-x[i])*(y[i+1]-y[i]);
+//			double partintegral = square + triangle;
+//			integral += partintegral;
+//		}
+//		else{
+//			double square = (x[i+1]-x[i])*y[i+1];
+//			double triangle = 0.5*(x[i+1]-x[i])*(y[i]-y[i+1]);
+//			double partintegral = square + triangle;
+//			integral += partintegral;
+//		}
+//		}
+//	return integral;
+
+
 
 
 
@@ -59,21 +81,20 @@ int main(){
 		y[i]=pow(i,2);
 		fprintf(mylinearpoints,"%10g %10g\n",x[i],y[i]);
 	}
+	fclose(mylinearpoints);
 
-	double thin = 10;
-
+//now i need to interpolate which we will do putting in smaller values through the function
+	double thin = 5;
 	while(z<=thin*x[n-1]){
 		printf("%10g %10g\n",z/thin,linterp(n,x,y,z/thin));
 		z++;
 	}
 
+	//to integrate we want to put it into a new file 
 	FILE* theinteg=fopen("linearint.out.txt","w");
-	while(z<=thin*x[n-1]){
+	for(z=0; z<=thin*(n-1);z++){
 		fprintf(theinteg,"%10g %10g\n",z/thin,linterp_integ(n,x,y,z/thin));
-		z++;
 	}
-
-
 
 return 0;
 }
