@@ -136,7 +136,7 @@ int main(){
 
 	FILE* gsldata = fopen("gslinfo.txt","w");	
 	for(z=0; z<=thin*(n-1);z++){
-		fprintf(gsldata,"%10g %10g \n",linterp_gsl(n,x,y,z/thin),linterp_integ_gsl(n,x,y,z/thin));
+		fprintf(gsldata,"%10g %10g %10g \n",z/thin, linterp_gsl(n,x,y,z/thin),linterp_integ_gsl(n,x,y,z/thin));
 	}
 
 

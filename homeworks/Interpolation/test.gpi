@@ -1,9 +1,10 @@
 \
 set terminal png;\
-set output "points.pyxplot.png";\
+set output "integration.pyxplot.png";\
 set xlabel "x";\
 set ylabel "y";\
-set title "Random Points";\
+set title "Linear Integration";\
 plot \
-"plots.out.txt" with points using 1:2\
+"linearint.out.txt" with line using 1:2\
+,"gslinfo.txt" using 1:3 with line title "linear gsl interpolation integration"\
 
