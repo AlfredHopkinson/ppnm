@@ -2,6 +2,9 @@
 #include<math.h>
 #include<gsl/gsl_vector.h>
 #include<assert.h>
+#include<gsl/gsl_interp.h>
+#include<gsl/gsl_spline.h>
+#include<stdlib.h>
 
 
 int binsearch(int n, double* x, double z){/* locates the interval for z by bisection */ 
@@ -44,6 +47,36 @@ double linterp_integ(int n, double* x, double* y, double z){
 
 	return integral;
 }
+
+
+double linterp_gsl(int n, double* x, double* y, double z){
+	gsl_interp *interpolation = gsl_interp_alloc(gsl_interp_linear,n);
+	gsl_interp_init(interpolation,x,y,n);
+	gsl_interp_accel*accelerator = gsl_interp_accel_alloc();
+
+return gsl_interp_eval(interpolation,x,y,z,accelerator);
+}
+
+double linterp_integ_gsl(int n, double* x, double* y, double z){
+int i=0, j=n-1;
+while(j-i>1){
+	int mid=(i+j)/2;
+	if(z>x[mid]) i=mid;
+	else j=mid;
+	}
+gsl_interp *interpolation = gsl_interp_alloc(gsl_interp_linear,n);
+gsl_interp_init(interpolation,x,y,n);
+gsl_interp_accel*accelerator = gsl_interp_accel_alloc();
+double integral=0;
+integral+= gsl_interp_eval_integ(interpolation,x,y,0,z,accelerator);
+
+gsl_interp_free(interpolation);
+return  integral;
+}
+
+
+
+
 
 //this didnt work so try simplifying it and using a while loop
 //	for(p=1; p<=i; p++){
@@ -95,6 +128,18 @@ int main(){
 	for(z=0; z<=thin*(n-1);z++){
 		fprintf(theinteg,"%10g %10g\n",z/thin,linterp_integ(n,x,y,z/thin));
 	}
+
+	//now I have to compare what I have done above with GSL own
+	
+	
+
+
+	FILE* gsldata = fopen("gslinfo.txt","w");	
+	for(z=0; z<=thin*(n-1);z++){
+		fprintf(gsldata,"%10g %10g \n",linterp_gsl(n,x,y,z/thin),linterp_integ_gsl(n,x,y,z/thin));
+	}
+
+
 
 return 0;
 }

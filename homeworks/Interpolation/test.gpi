@@ -1,9 +1,9 @@
 \
 set terminal png;\
-set output "integration.pyxplot.png";\
+set output "points.pyxplot.png";\
 set xlabel "x";\
 set ylabel "y";\
-set title "Linear Integration";\
+set title "Random Points";\
 plot \
-"linearint.out.txt" with line using 1:2\
+"plots.out.txt" with points using 1:2\
 
