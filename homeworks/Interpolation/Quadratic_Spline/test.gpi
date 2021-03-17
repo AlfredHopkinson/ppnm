@@ -1,0 +1,12 @@
+\
+set terminal png;\
+set output "interpolation.pyxplot.png";\
+set xlabel "x";\
+set ylabel "y";\
+set title "Quadratic Interpolation";\
+plot \
+"plots.out.txt" using 1:2 with points\
+,"quad.out.txt" using 1:2 with line title "quadratic interpolation"\
+,"quad.out.txt" using 1:3 with line title "quadratic interpolation differentiation"\
+,"quad.out.txt" using 1:4 with line title "quadratic interpolation integration"\
+

@@ -87,7 +87,7 @@ int main(){
 
 	for(int i=0;i<n;i++){
 		x[i]=i;
-		y[i]=pow(i,2);
+		y[i]= (100.0*rand()/RAND_MAX);
 		fprintf(mypoints,"%10g %10g\n",x[i],y[i]);
 	}
 

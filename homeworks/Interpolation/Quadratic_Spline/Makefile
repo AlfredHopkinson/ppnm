@@ -5,12 +5,12 @@ CFLAGS += $(shell gsl-config --cflags)
 LDLIBS += $(shell gsl-config --libs)
  
 
-quad.out.txt: quadratic
-	./$< > $@
+#quad.out.txt: quadratic
+#	./$< > $@
 
 
 
-interpolation.pyxplot.png: quad.out.txt Makefile
+interpolation.pyxplot.png: plots.out.txt quad.out.txt Makefile
 	echo '\
 	set terminal png;\
 	set output "$@";\
@@ -19,6 +19,7 @@ interpolation.pyxplot.png: quad.out.txt Makefile
 	set title "Quadratic Interpolation";\
 	plot \
 	"plots.out.txt" using 1:2 with points\
-	,"linear.out.txt" with line title "linear interpolation"\
-	,"gslinfo.txt" using 1:2 with line title "linear gsl interpolation"\
+	,"quad.out.txt" using 1:2 with line title "quadratic interpolation"\
+	,"quad.out.txt" using 1:3 with line title "quadratic interpolation differentiation"\
+	,"quad.out.txt" using 1:4 with line title "quadratic interpolation integration"\
 	' | tee test.gpi | pyxplot
