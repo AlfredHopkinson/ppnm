@@ -110,8 +110,8 @@ int main(){
 	FILE* mylinearpoints = fopen("plots.out.txt","w");
 	for(int i=0; i<n; i++){
 		x[i]=i;
-//		y[i]= (100.0*rand()/RAND_MAX);  //adapted from multi proc
-		y[i]=pow(i,2);
+		y[i]= (100.0*rand()/RAND_MAX);  //adapted from multi proc
+//		y[i]=pow(i,2);
 		fprintf(mylinearpoints,"%10g %10g\n",x[i],y[i]);
 	}
 	fclose(mylinearpoints);

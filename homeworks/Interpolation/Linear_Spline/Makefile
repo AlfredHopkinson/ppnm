@@ -5,12 +5,12 @@ CFLAGS += $(shell gsl-config --cflags)
 LDLIBS += $(shell gsl-config --libs)
 
 
-#linear.out.txt: linear
-#	./$< > $@
+linear.out.txt: linear
+	./$< > $@
 
 
-#points.pyxplot.png: plots.out.txt Makefile
-#	echo '\
+points.pyxplot.png: plots.out.txt Makefile
+	echo '\
 	set terminal png;\
 	set output "$@";\
 	set xlabel "x";\
@@ -20,8 +20,8 @@ LDLIBS += $(shell gsl-config --libs)
 	"plots.out.txt" with points using 1:2\
 	' | tee test.gpi | pyxplot
 
-#interpolation.pyxplot.png: plots.out.txt linear.out.txt gslinfo.txt Makefile
-#	echo '\
+interpolation.pyxplot.png: plots.out.txt linear.out.txt gslinfo.txt Makefile
+	echo '\
 	set terminal png;\
 	set output "$@";\
 	set xlabel "x";\
