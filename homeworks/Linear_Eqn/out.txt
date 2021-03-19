@@ -1,0 +1,2 @@
+PART A
+Creating the function and performing the Gram-Schmidt on it
