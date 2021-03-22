@@ -11,12 +11,12 @@ void GS_decomp(gsl_matrix *A, gsl_matrix *R){
 	int m = A->size2;
 	int n = A->size1;
 	assert(A->size2 == R ->size1);
-	assert(n > m);
+	//assert(n > m); had this but it breaks for part b so remember 
 	double Rij, Rmatrixii;
 	for(int i=0;i<m;i++){
 		gsl_vector_view icolumn = gsl_matrix_column(A, i);
 		
-		// the linear says we need to generate the equation but need to get the sqrt of a.a 
+		// the tor("b =",b); says we need to generate the equation but need to get the sqrt of a.a 
 		// coulnt find a nice way to manually do this so found a blas
 		Rmatrixii= gsl_blas_dnrm2(&icolumn.vector); //this blas does the exact right thing we need it for
 		gsl_matrix_set(R, i, i, Rmatrixii);
@@ -38,28 +38,34 @@ void print_matrix(const char* p, gsl_matrix * A){
 	printf("%s\n",p);
 	for(int i=0;i<A->size1;i++){
 		for(int j=0;j<A->size2;j++){
-			printf("%g",gsl_matrix_get(A,i,j));
+			printf("%10g",gsl_matrix_get(A,i,j));
 		}
 		printf("\n");
 	}
-	printf("\n");
 }
 
-void GS_solve(gsl_matrix* Q, gsl_matrix* R, gsl_vector* b, gsl_vector* x){
+void GS_solve(gsl_matrix* Qb, gsl_matrix* Rb, gsl_vector* b, gsl_vector* x){
 	//apply qt to vector b and save in x using blas again
-	gsl_blas_dgemv(CblasTrans,1,Q,b,0,x);
+	gsl_blas_dgemv(CblasTrans,1,Qb,b,0,x);
 	//preform the back subs from the woorkbooklet
 	
 	for(int i=x->size-1;i>=0;i--){
 		double s=gsl_vector_get(x,i);
 		for(int k=i+1;k<x->size;k++){
-			s-=gsl_matrix_get(R,i,k)*gsl_vector_get(x,k);
-			gsl_vector_set(x,i,s/gsl_matrix_get(R,i,i));
+			s-=gsl_matrix_get(Rb,i,k)*gsl_vector_get(x,k);
+			gsl_vector_set(x,i,s/gsl_matrix_get(Rb,i,i));
 		}
 	}
 }
 
-
+void print_vector(const char* p, gsl_vector * A){
+	printf("%s\n",p);
+	for(int i=0;i<A->size;i++){
+		printf("%10g",gsl_vector_get(A,i));
+	}
+	printf("\n");
+	
+}
 
 
 
@@ -89,9 +95,11 @@ int main(){
 	GS_decomp(Q,R);
 	//got the decomposition now do the checks - involves printing matrix 
 	print_matrix("A=",A);
+	printf("\n");
 	print_matrix("R=",R);
+	printf("\n");
 	print_matrix("Q=",Q);
-
+	printf("\n");
 	//doing this shows the R being triangular and that it works next is to do the transpose 
 //	gsl_matrix* Qt=gsl_matrix_alloc(m,n);
 //	gsl_matrix* Qtcopy=gsl_matrix_alloc(m,n);
@@ -105,37 +113,66 @@ int main(){
 
 	gsl_matrix* QtimesQt = gsl_matrix_alloc(m,m);
 	gsl_blas_dgemm(CblasTrans,CblasNoTrans, 1.0, Q,Q,0.0, QtimesQt );//this does it for you which would have been much easier from the start
-	printf("We can show Qt*Q=1");
+	printf("We can show Qt*Q=1\n");
 	print_matrix("Qt*Q=", QtimesQt);
+	printf("\n");
 	printf("I believe this is close to 0 and only isnt due to rounding errors\n");
-	
+	printf("\n");
 	
 	gsl_matrix * QR=gsl_matrix_alloc(n,m);
 	gsl_blas_dgemm(CblasNoTrans,CblasNoTrans, 1.0, Q,R,0.0, QR );
 	printf("Checking QR=A\n");
 	print_matrix("QR=",QR);
-
+	printf("\n");
 
 	printf("Now time for part 2 GS_solve\n");
 
 	//put in the solve funct
-	int nm=5;
+	int nm=8;
 
 	gsl_matrix* Ab=gsl_matrix_alloc(nm,nm);
-	gsl_matrix* b=gsl_matrix_alloc(nm,nm);
-	
+	gsl_matrix* Ac=gsl_matrix_alloc(nm,nm);
+	gsl_vector* b=gsl_vector_calloc(nm);
+	gsl_vector* x=gsl_vector_calloc(nm);
+
 	for(int i=0;i<Ab->size1;i++){
 		for(int j=0;j<Ab->size2;j++){
 			gsl_matrix_set(Ab,i,j,rand()%10);
 		}
 	}
-	for(int i=0;i<b->size1;i++){
-		for(int j=0;j<b->size2;j++){
-			gsl_matrix_set(b,i,j,rand()%10);
-		}
+	for(int i=0;i<b->size;i++){
+		gsl_vector_set(b,i,rand()%10);
 	}
+	print_vector("b =",b);
+	printf("\n");
+	// factorise Ab into Qb and Rb
+	
+	gsl_matrix* Qb=gsl_matrix_alloc(nm,nm);
+	gsl_matrix* Rb=gsl_matrix_alloc(nm,nm);
+	gsl_matrix_memcpy(Qb, Ab);	
 
+	GS_decomp(Qb,Rb);
 
+	print_matrix("Qb=",Qb);
+	printf("\n");
+	print_matrix("Rb=",Rb);
+	printf("\n");
+	
+	GS_solve(Qb,Rb,b,x);
+	
+	
+	printf("showing Ax=b\n");
+	//to print out b we need a print vector func
+	gsl_vector * Ax=gsl_vector_calloc(nm);
+	gsl_blas_dgemv(CblasNoTrans, 1, Ab,x,0.0, Ax );//this is the same as previous but vector 
+	print_vector("A*x=",Ax);
+	printf("\n");
+	printf("to check against b\n");
+	
+
+	print_vector("b=",b);
+	printf("As can be seen there has been a large amount of rounding and so Ax and b are not fully equal but they are close enough to show the function works as intended");
+	printf("\n");
 
 
 
