@@ -53,5 +53,24 @@ int main(){
 	print_vector("dy=",dy);
 	//now its time to make the least square fit function
 
+	int m=2;
+	gsl_vector * c =gsl_vector_alloc(m);
+	gsl_matrix *S = gsl_matrix_alloc(m,m);
+
+	//switch to log 
+	//uncertanty is dlny=dy/y
+	gsl_vector_div(dy,y);//stores new dy n dy
+	//gsl_vector_mul(y,log 
+	for(int k=0; k<y->size; k++){
+		gsl_vector_set(y,k,log((gsl_vector_get(y,k))));
+	}
+	print_vector("log y =",y);
+	print_vector("dy =",dy);
+	//now put into the least square func
+	LSF(t,y,dy,c,f,m,s
+
+
+
+
 return 0;
 }

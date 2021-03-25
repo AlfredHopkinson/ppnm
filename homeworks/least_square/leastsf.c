@@ -58,21 +58,44 @@ void GS_solve(gsl_matrix* Qb, gsl_matrix* Rb, gsl_vector* b, gsl_vector* x){
 	}
 }
 
+void GS_inverse(gsl_matrix* Q, gsl_matrix* R, gsl_matrix* B){
+	gsl_vector*x = gsl_vector_alloc(B->size2);
+	gsl_matrix_set_identity(B);
+	for(int i=0; i<B->size2; i++){
+		gsl_vector_view column = gsl_matrix_column(B,i);
+		gsl_blas_dcopy(&column.vector,x);
+		GS_solve(Q,R,x,&column.vector);
+	}
+}
+
+
+
+
 //here we were given a python least square fit so convert it to c or use basis to make own
 
-void LSF(gsl_vector * t, gsl_vector * y, gsl_vector * dy, int m){
-	int n = x->size;
+void LSF(gsl_vector * t, gsl_vector * y, gsl_vector * dy, int m, double f(int,double), gsl_vector * c, gsl_matrix * S){
+	int n = t->size;
 
 	gsl_matrix* A = gsl_matrix_alloc(n,m);
 	gsl_vector* b = gsl_vector_alloc(n);
+	gsl_matrix* R = gsl_matrix_alloc(m,m);
 
 	for(int i=0;i<n;i++){
-		gsl_vector_set(i,gsl_vector_get(y,i)/gsl_vector_get(dy,i));
+		gsl_vector_set(b,i,gsl_vector_get(y,i)/gsl_vector_get(dy,i));
 		
 		for(int k=0;k<m;k++){
-			gsl_matrix_set(
-
-
+			gsl_matrix_set(A,i,k,f(gsl_vector_get(t,i),k)/gsl_vector_get(dy,i));
+		}
+	}
+	GS_decomp(A,R);
+	GS_solve(A,R,b,c);//missed this step but you need to back subs and put into c like the booklet says
+	gsl_matrix* inverse = gsl_matrix_alloc(m,m);
+	gsl_matrix* i = gsl_matrix_alloc(m,m);
+	gsl_matrix_set_identity(i);//use from inverse previous problem
+	GS_inverse(i,R,inverse);
+	//now wants to multiply inverse R and inverse transpose R
+	gsl_blas_dgemm(CblasNoTrans,CblasTrans, 1.0, inverse,inverse,0.0, S);
+	
 
 }
 
