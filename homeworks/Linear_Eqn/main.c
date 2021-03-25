@@ -38,7 +38,7 @@ void print_matrix(const char* p, gsl_matrix * A){
 	printf("%s\n",p);
 	for(int i=0;i<A->size1;i++){
 		for(int j=0;j<A->size2;j++){
-			printf("%10g",gsl_matrix_get(A,i,j));
+			printf("%15g",gsl_matrix_get(A,i,j));
 		}
 		printf("\n");
 	}
@@ -53,8 +53,9 @@ void GS_solve(gsl_matrix* Qb, gsl_matrix* Rb, gsl_vector* b, gsl_vector* x){
 		double s=gsl_vector_get(x,i);
 		for(int k=i+1;k<x->size;k++){
 			s-=gsl_matrix_get(Rb,i,k)*gsl_vector_get(x,k);
-			gsl_vector_set(x,i,s/gsl_matrix_get(Rb,i,i));
 		}
+		gsl_vector_set(x,i,s/gsl_matrix_get(Rb,i,i));
+		
 	}
 }
 
@@ -65,6 +66,21 @@ void print_vector(const char* p, gsl_vector * A){
 	}
 	printf("\n");
 	
+}
+
+
+//part b is to create an inverse function
+//there is the basics of one on the chapter so modified that in here
+void GS_inverse(gsl_matrix* Q, gsl_matrix* R, gsl_matrix* B){
+	//here there is the problem gs slove needs a vector x to put into
+	gsl_vector*x = gsl_vector_alloc(B->size2);
+	gsl_matrix_set_identity(B);
+	for(int i=0; i<B->size2; i++){
+		gsl_vector_view column = gsl_matrix_column(B,i);
+		//put in a copy of these then solve
+		gsl_blas_dcopy(&column.vector,x);
+		GS_solve(Q,R,x,&column.vector);
+	}
 }
 
 
@@ -174,6 +190,39 @@ int main(){
 	printf("As can be seen there has been a large amount of rounding and so Ax and b are not fully equal but they are close enough to show the function works as intended");
 	printf("\n");
 
+	printf("Part B\n");
+
+	gsl_matrix* T=gsl_matrix_alloc(n,n);
+	gsl_matrix* S=gsl_matrix_alloc(n,n);
+	gsl_matrix* V=gsl_matrix_alloc(n,n);
+	
+	for(int i=0;i<T->size1;i++){
+		for(int j=0;j<T->size2;j++){
+			gsl_matrix_set(T,i,j,rand()%10);
+		}
+	}
+	
+	gsl_matrix_memcpy(S, T);
+	GS_decomp(S,V);
+
+	print_matrix("A=",T);
+	print_matrix("Q=",S);
+	print_matrix("R=",V);
+
+	gsl_matrix *invT = gsl_matrix_alloc(n,n);
+
+	GS_inverse(S,V,invT);
+	print_matrix("Inverse of A =",invT);
+
+	printf("To check we calculate AB = I = BA\n");
+	
+	gsl_matrix *AB = gsl_matrix_alloc(n,n);
+	gsl_blas_dgemm(CblasNoTrans,CblasNoTrans, 1.0, T,invT,0.0, AB);
+	print_matrix("AB =",AB);
+
+	gsl_matrix *BA = gsl_matrix_alloc(n,n);
+	gsl_blas_dgemm(CblasNoTrans,CblasNoTrans, 1.0, invT,T,0.0, BA);
+	print_matrix("BA =",BA);
 
 
 
