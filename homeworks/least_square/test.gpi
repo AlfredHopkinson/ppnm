@@ -1,0 +1,10 @@
+\
+set terminal png;\
+set output "LSF.pyxplot.png";\
+set xlabel "x";\
+set ylabel "y";\
+set title "Least Square Fit";\
+plot \
+"LSF.out.txt" using 1:2 with points title "log results"\
+,"LSF.out.txt" using 3:4 with line\
+

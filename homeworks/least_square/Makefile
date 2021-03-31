@@ -2,12 +2,12 @@ CFLAGS = -Wall -O1 -std=gnu11
 CFLAGS += $(shell /usr/bin/gsl-config --cflags)
 LDLIBS += $(shell /usr/bin/gsl-config --libs)
 
-default: out.txt
+#default: out.txt
 
-main: main.o leastsf.o
+#main: main.o leastsf.o
 
-out.txt:main
-	./$< > out.txt
+#out.txt:main
+#	./$< > out.txt
 
 LSF.pyxplot.png: LSF.out.txt
 	echo '\
@@ -15,9 +15,9 @@ LSF.pyxplot.png: LSF.out.txt
 	set output "$@";\
 	set xlabel "x";\
 	set ylabel "y";\
-	set title "Quadratic Interpolation";\
+	set title "Least Square Fit";\
 	plot \
-	"plots.out.txt" using 1:2 with points\
+	"LSF.out.txt" using 1:2 with line title "best fit"\
 	' | tee test.gpi | pyxplot
 
 

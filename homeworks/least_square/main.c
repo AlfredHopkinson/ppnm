@@ -83,9 +83,23 @@ int main(){
 	print_vector("c=",c);
 	
 	//the outfiles is very full so put into a new txt file to plot to check numbers are right
-	
+	FILE* plot = fopen("LSF.out.txt","w");
+	int o = 100;
+	gsl_vector* mt=gsl_vector_alloc(o);
+	gsl_vector* my=gsl_vector_alloc(o);
+
+	for(int i=0;i<o-1; i++){
+		gsl_vector_set(mt,i,16*i/(o-1));
+		gsl_vector_set(my,i,gsl_vector_get(c,0)+gsl_vector_get(mt,i)*gsl_vector_get(c,1));
+
+		fprintf(plot, "%10g %10g\n",gsl_vector_get(mt,i), gsl_vector_get(my,i));
+	}
 
 
+
+
+
+	printf("halflife of ThX is %g +- %g\n",-log(2)/gsl_vector_get(c,1),log(2)/pow(gsl_vector_get(c,1),2)*sqrt(gsl_matrix_get(S,1,1)));
 
 return 0;
 }
