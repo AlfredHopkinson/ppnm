@@ -8,6 +8,15 @@
 #include<assert.h>
 #include"leastsf.h"
 
+double f(int i, double x){
+	switch(i){
+		case 0: return 1; break;
+		case 1: return x ; break;
+		case 2: return x*x; break;
+		default: printf("f is wrong %i",i); return NAN; break;
+	}
+}
+
 //move the functions into  a .h as linear was horrible with that
 
 int main(){
@@ -53,6 +62,7 @@ int main(){
 	print_vector("dy=",dy);
 	//now its time to make the least square fit function
 
+
 	int m=2;
 	gsl_vector * c =gsl_vector_alloc(m);
 	gsl_matrix *S = gsl_matrix_alloc(m,m);
@@ -67,8 +77,13 @@ int main(){
 	print_vector("log y =",y);
 	print_vector("dy =",dy);
 	//now put into the least square func
-	LSF(t,y,dy,c,f,m,s
-
+	LSF(t,y,dy,m,f,c,S);
+	
+	print_matrix("S=",S);
+	print_vector("c=",c);
+	
+	//the outfiles is very full so put into a new txt file to plot to check numbers are right
+	
 
 
 
