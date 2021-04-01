@@ -83,7 +83,12 @@ int main(){
 	print_vector("c=",c);
 	
 	//the outfiles is very full so put into a new txt file to plot to check numbers are right
-	FILE* plot = fopen("LSF.out.txt","w");
+	FILE* fit = fopen("LSF.out.txt","w");
+	FILE* plot = fopen("plot.out.txt","w");
+	int p = 9;
+	for(int i=0;i<p;i++){
+		fprintf(plot,"%10g %10g %10g\n",gsl_vector_get(t ,i),gsl_vector_get(y,i), gsl_vector_get(dy,i));
+	}
 	int o = 100;
 	gsl_vector* mt=gsl_vector_alloc(o);
 	gsl_vector* my=gsl_vector_alloc(o);
@@ -92,7 +97,7 @@ int main(){
 		gsl_vector_set(mt,i,16*i/(o-1));
 		gsl_vector_set(my,i,gsl_vector_get(c,0)+gsl_vector_get(mt,i)*gsl_vector_get(c,1));
 
-		fprintf(plot, "%10g %10g\n",gsl_vector_get(mt,i), gsl_vector_get(my,i));
+		fprintf(fit, "%10g %10g\n",gsl_vector_get(mt,i), gsl_vector_get(my,i));
 	}
 
 

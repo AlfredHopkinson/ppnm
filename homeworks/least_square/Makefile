@@ -9,15 +9,16 @@ LDLIBS += $(shell /usr/bin/gsl-config --libs)
 #out.txt:main
 #	./$< > out.txt
 
-LSF.pyxplot.png: LSF.out.txt
+LSF.pyxplot.png: LSF.out.txt plot.out.txt
 	echo '\
 	set terminal png;\
 	set output "$@";\
-	set xlabel "x";\
-	set ylabel "y";\
+	set xlabel "Time in Days";\
+	set ylabel "Log(Activity)";\
 	set title "Least Square Fit";\
 	plot \
 	"LSF.out.txt" using 1:2 with line title "best fit"\
+	,"plot.out.txt" using 1:2:3 with errorbars title "data"\
 	' | tee test.gpi | pyxplot
 
 

@@ -1,10 +1,10 @@
 \
 set terminal png;\
 set output "LSF.pyxplot.png";\
-set xlabel "x";\
-set ylabel "y";\
+set xlabel "Time in Days";\
+set ylabel "Log(Activity)";\
 set title "Least Square Fit";\
 plot \
-"LSF.out.txt" using 1:2 with points title "log results"\
-,"LSF.out.txt" using 3:4 with line\
+"LSF.out.txt" using 1:2 with line title "best fit"\
+,"plot.out.txt" using 1:2:3 with errorbars title "data"\
 
