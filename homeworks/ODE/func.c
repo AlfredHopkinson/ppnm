@@ -28,7 +28,7 @@ void print_matrix(const char* p, gsl_matrix * A){
 //make the RK stepper we go for 12 like in the example
 void rkstep12(
 	//compared to the exampel x=t, yx=yt, h=h, yh=yh, dy= err
-	void f(double t,gsl_vector*y,gsl_vector*dydt) /* the f from dy/dt=f(t,y) */
+	void f(double t,gsl_vector*y,gsl_vector*dydt), /* the f from dy/dt=f(t,y) */
 	double t,              /* the current value of the variable */
 	gsl_vector* yt,            /* the current value y(t) of the sought function */
 	double h,              /* the step to be taken */
@@ -51,7 +51,7 @@ void rkstep12(
 		gsl_vector_set(yh,i, gsl_vector_get(yt,i)+gsl_vector_get(k12,i)*h);
 	}
 	for(int i=0;i<c;i++){
-		gsl_vector_set(err,i, (gsl_vector_get(k0,i)-gsl_vector_get(k12,i))*0.5*h);
+		gsl_vector_set(err,i, (gsl_vector_get(k0,i)-gsl_vector_get(k12,i))*0.5);
 	}
 	gsl_vector_free(k0);
 	gsl_vector_free(k12);
@@ -63,7 +63,7 @@ void rkstep12(
 //use same letters for the void like above
 //follow the guide one in the chapter 
 void driver(
-	void f(double t,vector* y,vector* dydt), /* right-hand-side of dy/dt=f(t,y) */
+	void f(double t,gsl_vector* y,gsl_vector* dydt), /* right-hand-side of dy/dt=f(t,y) */
 	double a,                     /* the start-point a */
 	gsl_vector* ya,                     /* y(a) */
 	double b,                     /* the end-point of the integration */
@@ -71,37 +71,55 @@ void driver(
 	double h,                     /* initial step-size */
 	double acc,                   /* absolute accuracy goal */
 	double eps,
-	double s,
-	double s1,
-	double err,
-	double normyb,
-	double tol
-)
+	gsl_vector* err
+	
+){
+	int n = ya->size;
+	double t = a; //this will be the starting point  coming back to this added in a parint to show the starting point want working take out later
+	printf("%g ",t);
+	//print_vector("",ya);
+	for(int i=0;i<n;i++){
+		printf("%g ",gsl_vector_get(ya,i));
+	}
+	printf("\n");
 	while(t<b){
-		if(t+h>b){ 
-			h = b-t;//a check that it doesnt step too far
+		if(t+h>b) h = b-t;//a check that it doesnt step too far
 			rkstep12(f,t,ya,h,yb,err); //put it through the RK with the y(t=h) being now in yb
 			
 			//next part is checking the tolerance
-			s=0;
-			for(i=0; i<n; i++){ s+=gsl_vector_get(dy,i)*gsl_vector_get(dy,i);}
-			err = sqrt(s);
-			s1=0;
-			for(i=0; i<n; i++){ s1+=gsl_vector_get(yb,i)*gsl_vector_get(yb,i);}
-			normyb = sqrt(s1);
-			tol = (normyb*eps+acc)*sqrt(h/(b-a));
+			//
+			//
+			//couldnt get this to work as i have done it in a none vector method
+			//instead im going to do the same thing but with a BLAS need to use BLAS more
+			//s=0;
+			//for(int i=0; i<n; i++){ s+=gsl_vector_get(dy,i)*gsl_vector_get(dy,i);}
+			//err = sqrt(s);
+			//s1=0;
+			//for(int i=0; i<n; i++){ s1+=gsl_vector_get(yb,i)*gsl_vector_get(yb,i);}
+			//normyb = sqrt(s1);
+			//tol = (normyb*eps+acc)*sqrt(h/(b-a));
+
+			double nerr = gsl_blas_dnrm2(err);
+			double normyb = gsl_blas_dnrm2(yb);
+			double tol = (eps*normyb+acc)*sqrt(h/(b-a));
 
 			//this next part checks if the tolerance is greater then the error
 
-			if(err<tol){
+			if(nerr<tol){
 				t = t+h;
 				gsl_vector_memcpy(ya,yb);
-				for(int i =0; i<ya->size; i++){ printf("%g",gsl_vector_get(ya,i));
+				printf("%g ",t);
+				//print_vector("",ya);  //for some reason it isnt liking putting a func in a func so do expanded
+				for(int i=0;i<n;i++){
+					printf("%g ",gsl_vector_get(ya,i));
 				}
-				printf("%g",t);
+				printf("\n");
+				
 			}
-			h = pow(tol/err,o.25)*0.95; //the new stepsize
-		}
-		gsl_vector_free(yb);
-		gsl_vector_free(err);
+			h *= pow(tol/nerr,0.25)*0.95; //the new stepsize
+		
+		
+				
 	}
+}
+

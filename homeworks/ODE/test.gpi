@@ -1,0 +1,9 @@
+\
+set terminal png;\
+set output "example.pyxplot.png";\
+set xlabel "x";\
+set ylabel "y";\
+set title "Example";\
+plot \
+"out.txt" using 1:2 with line\
+

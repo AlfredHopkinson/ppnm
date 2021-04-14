@@ -21,13 +21,15 @@ int main(){
 	gsl_vector* yt = gsl_vector_alloc(3);
 	gsl_vector* yh = gsl_vector_alloc(3);
 	gsl_vector* err = gsl_vector_alloc(3);
+
 	//set the initial conditions
 	gsl_vector_set(yt,0,1);
 	gsl_vector_set(yt,1,0);
 	
-	//now use the driver for d2u=-u
-	double h =0.5;
 
+	//now use the driver for d2u=-u
+	double h =0.1;
+	
 	driver(example,0,yt,4*M_PI,yh,err,h,0.1,0.1);
 
 return 0;
