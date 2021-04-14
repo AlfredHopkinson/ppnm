@@ -1,9 +1,11 @@
 \
 set terminal png;\
-set output "example.pyxplot.png";\
+set output "sir.pyxplot.png";\
 set xlabel "x";\
 set ylabel "y";\
-set title "Example";\
+set title "Quadratic Interpolation";\
 plot \
-"out.txt" using 1:2 with line\
+"sir.out.txt" using 1:2 with linespoints title "Susceptible"\
+,"sir.out.txt" using 1:3 with linespoints title "Infected"\
+,"sir.out.txt" using 1:4 with linespoints title "Removed"\
 
