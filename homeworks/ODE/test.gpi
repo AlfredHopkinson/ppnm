@@ -3,7 +3,7 @@ set terminal png;\
 set output "sir.pyxplot.png";\
 set xlabel "x";\
 set ylabel "y";\
-set title "Quadratic Interpolation";\
+set title "SIR Model";\
 plot \
 "sir.out.txt" using 1:2 with linespoints title "Susceptible"\
 ,"sir.out.txt" using 1:3 with linespoints title "Infected"\

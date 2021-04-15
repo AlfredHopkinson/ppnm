@@ -45,6 +45,9 @@ int main(){
 	//driver for sir
 	driver(sir,0,ya,60,yb,error,h,0.1,0.1);
 	//fprintf(sirout,"%10d\n",sirsave);
+	
+	FILE * SIR_exp = fopen("SIR_Exp","w");
+	printf("As can be seen in the graphs, increasing the Tc results in the infected peak becoming shorter and wider. It means the epidemic lasts longer because of this. We would expect this result with a longer time between infections.");
 
 
 

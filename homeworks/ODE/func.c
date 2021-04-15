@@ -62,8 +62,8 @@ void rkstep12(
 //now time to do the second driver part
 //use same letters for the void like above
 //follow the guide one in the chapter 
-void driver(
-	void f(double t,gsl_vector* y,gsl_vector* dydt), /* right-hand-side of dy/dt=f(t,y) */
+int driver(
+	void (*f)(double t,gsl_vector* y,gsl_vector* dydt), /* right-hand-side of dy/dt=f(t,y) */
 	double a,                     /* the start-point a */
 	gsl_vector* ya,                     /* y(a) */
 	double b,                     /* the end-point of the integration */
@@ -74,12 +74,13 @@ void driver(
 	gsl_vector* err
 	
 ){
-	int n = ya->size;
+	int k = ya->size;
 	double t = a; //this will be the starting point  coming back to this added in a parint to show the starting point want working take out later
-	printf("%g ",t);
+	printf("%10g ",t);
 	//print_vector("",ya);
-	for(int i=0;i<n;i++){
-		printf("%g ",gsl_vector_get(ya,i));
+	for(int i=0;i<k;i++){
+		printf("%10g ",gsl_vector_get(ya,i));
+		
 	}
 	printf("\n");
 	while(t<b){
@@ -108,10 +109,10 @@ void driver(
 			if(nerr<tol){
 				t = t+h;
 				gsl_vector_memcpy(ya,yb);
-				printf("%g ",t);
+				printf("%10g ",t);
 				//print_vector("",ya);  //for some reason it isnt liking putting a func in a func so do expanded
-				for(int i=0;i<n;i++){
-					printf("%g ",gsl_vector_get(ya,i));
+				for(int i=0;i<k;i++){
+					printf("%10g ",gsl_vector_get(ya,i));
 				}
 				printf("\n");
 				
