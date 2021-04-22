@@ -1,0 +1,3 @@
+Part A
+The Test Integrals
+Integral of f(x)=sqrt(x) is 0.672681 and it used 4 number of evaluations. It correct value is 2/3 or 0.6666 so it is very close.
