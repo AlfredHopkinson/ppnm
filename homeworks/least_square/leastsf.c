@@ -95,6 +95,7 @@ void LSF(gsl_vector * t, gsl_vector * y, gsl_vector * dy, int m, double (*f)(int
 			s-=gsl_matrix_get(R,i,k)*gsl_vector_get(c,k);
 		}
 		gsl_vector_set(c,i,s/gsl_matrix_get(R,i,i));
+		
 	}
 
 	gsl_matrix* inverse = gsl_matrix_alloc(m,m);
