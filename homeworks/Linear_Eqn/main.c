@@ -189,6 +189,9 @@ int main(){
 	print_vector("b=",b);
 	printf("As can be seen there has been a large amount of rounding and so Ax and b are not fully equal but they are close enough to show the function works as intended");
 	printf("\n");
+	printf("\n");
+	printf("\n");
+	printf("\n");
 
 	printf("Part B\n");
 

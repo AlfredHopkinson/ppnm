@@ -17,6 +17,63 @@ double f(int i, double x){
 	}
 }
 
+
+
+void LSF(gsl_vector * t, gsl_vector * y, gsl_vector * dy, int m, double (*f)(int i, double x), gsl_vector * c, gsl_matrix * S){
+	int n = t->size;
+
+	gsl_matrix* A = gsl_matrix_alloc(n,m);
+	gsl_vector* b = gsl_vector_alloc(n);
+	gsl_matrix* R = gsl_matrix_alloc(m,m);
+
+	for(int i=0;i<n;i++){
+		gsl_vector_set(b,i,gsl_vector_get(y,i)/gsl_vector_get(dy,i));
+				
+		for(int k=0;k<m;k++){
+			gsl_matrix_set(A,i,k,f(k,gsl_vector_get(t,i))/gsl_vector_get(dy,i));
+		}
+	}
+	GS_decomp(A,R);
+//	GS_solve(A,R,b,c);//missed this step but you need to back subs and put into c like the booklet says	
+	
+	gsl_blas_dgemv(CblasTrans,1,A,b,0,c);
+	for(int i=c->size-1;i>=0;i--){
+		double s=gsl_vector_get(c,i);
+		for(int k=i+1;k<c->size;k++){
+			s-=gsl_matrix_get(R,i,k)*gsl_vector_get(c,k);
+		}
+		gsl_vector_set(c,i,s/gsl_matrix_get(R,i,i));
+	}
+	gsl_matrix* inverse = gsl_matrix_alloc(m,m);
+	gsl_matrix* id = gsl_matrix_alloc(m,m);
+	gsl_matrix_set_identity(id);//use from inverse previous problem
+	GS_inverse(id,R,inverse);
+	print_matrix("I =",id);
+	print_matrix("R =",R);
+	print_matrix("Inverse =",inverse);
+
+	gsl_blas_dgemm(CblasNoTrans,CblasNoTrans, 1.0, inverse,R,0.0, S);
+	print_matrix("inverse*R=",S);
+	gsl_blas_dgemm(CblasNoTrans,CblasNoTrans, 1.0, R,inverse,0.0, S);
+	print_matrix("R*inverse=",S);
+
+	//now wants to multiply inverse R and inverse transpose R
+	gsl_blas_dgemm(CblasNoTrans,CblasTrans, 1.0, inverse,inverse,0.0, S);
+
+	gsl_matrix_free(A);
+	gsl_matrix_free(R);
+	gsl_matrix_free(inverse);
+	gsl_vector_free(b);
+	gsl_matrix_free(id);
+}
+
+
+
+
+
+
+
+
 //move the functions into  a .h as linear was horrible with that
 
 int main(){
@@ -104,7 +161,31 @@ int main(){
 
 
 
-	printf("halflife of ThX is %g +- %g\n",-log(2)/gsl_vector_get(c,1),log(2)/pow(gsl_vector_get(c,1),2)*sqrt(gsl_matrix_get(S,1,1)));
+	printf("Halflife of ThX measured is %g +- %g\n The modern value of 224Ra is 3.6 days and so we are slightly over that value. However, There are other Ra isotopes with longer halflives which may be presnt in the sample they used which increases the time measured..",-log(2)/gsl_vector_get(c,1),log(2)/pow(gsl_vector_get(c,1),2)*sqrt(gsl_matrix_get(S,1,1)));
+
+	printf("\n\n\n\n\n");
+//If I come back and dont know what I did, I couldnt get this to work but it turns out I had coppied a section of my code wrng and this is a check 
+//
+	
+//	gsl_matrix* A=gsl_matrix_alloc(m,m);
+//	for(int i=0;i<A->size1;i++){
+//		for(int j=0;j<A->size2;j++){
+//			gsl_matrix_set(A,i,j,rand()%10);
+//		}
+//	}
+
+//	print_matrix("A=",A);
+	
+//	gsl_matrix* inv = gsl_matrix_alloc(m,m);
+//	gsl_matrix* ide = gsl_matrix_alloc(m,m);
+//	gsl_matrix_set_identity(ide);
+//	GS_inverse(ide,A,inv);
+//
+//	print_matrix("inv = ",inv);
+
+
+
+
 
 return 0;
 }

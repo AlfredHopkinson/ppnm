@@ -10,9 +10,29 @@ log y =
    4.76217   4.60517   4.47734   4.27667   3.97029   3.38439   3.22684    2.7213   2.40695
 dy =
       0.05      0.05      0.05      0.05      0.05      0.05      0.05      0.05      0.05
+I =
+         1         0
+         0         1
+R =
+        60       420
+         0   282.843
+Inverse =
+ 0.0166667-0.0247487
+         00.00353553
+inverse*R=
+         1         0
+         0         1
+R*inverse=
+         1         0
+         0         1
 S=
-   49.0003        -7
-        -7         1
+0.000890278 -8.75e-05
+ -8.75e-05  1.25e-05
 c=
    4.95867 -0.171379
-halflife of ThX is 4.04452 +- 23.5998
+Halflife of ThX measured is 4.04452 +- 0.0834378
+ The modern value of 224Ra is 3.6 days and so we are slightly over that value. However, There are other Ra isotopes with longer halflives which may be presnt in the sample they used which increases the time measured..
+
+
+
+
