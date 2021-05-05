@@ -1,0 +1,12 @@
+Example integral of a square with sides of a length 2,4
+The real area of the square is 8 the calculated area is 8.08904, the associated error is 0.144406
+
+
+Example Integral of a sphere of radius 1
+Real volume = 4.18879, calculated volume = 4.18809, associated error = 0.00399558
+
+
+Integral from the homework
+Integral value = 1.3932, Calculated value = 1.39644, associated error = 0.0101119
+
+
