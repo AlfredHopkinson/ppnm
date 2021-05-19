@@ -95,3 +95,47 @@ int driver(
 
 	}
 }
+
+
+void GS_decomp(gsl_matrix *A, gsl_matrix *R){
+	int m = A->size2;
+	int n = A->size1;
+	assert(A->size2 == R ->size1);
+	double Rij, Rmatrixii;
+	for(int i=0;i<m;i++){
+		gsl_vector_view icolumn = gsl_matrix_column(A, i);
+		Rmatrixii= gsl_blas_dnrm2(&icolumn.vector); 
+		gsl_matrix_set(R, i, i, Rmatrixii);
+		gsl_vector_scale(&icolumn.vector,1.0/Rmatrixii);
+
+		for(int j=i+1;j<m;j++){
+			gsl_vector_view columnj = gsl_matrix_column(A,j);
+			gsl_blas_ddot(&icolumn.vector, &columnj.vector, &Rij);	
+			gsl_matrix_set(R,i,j,Rij); 
+			gsl_blas_daxpy(-Rij, &icolumn.vector, &columnj.vector);
+		}
+	}
+}
+
+
+void GS_solve(gsl_matrix* Qb, gsl_matrix* Rb, gsl_vector* b, gsl_vector* x){
+	gsl_blas_dgemv(CblasTrans,1,Qb,b,0,x);
+	for(int i=x->size-1;i>=0;i--){
+		double s=gsl_vector_get(x,i);
+		for(int k=i+1;k<x->size;k++){
+			s-=gsl_matrix_get(Rb,i,k)*gsl_vector_get(x,k);
+		}
+		gsl_vector_set(x,i,s/gsl_matrix_get(Rb,i,i));
+						
+	}
+}
+
+
+
+
+
+
+
+
+
+

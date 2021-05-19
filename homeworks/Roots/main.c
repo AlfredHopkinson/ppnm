@@ -11,6 +11,22 @@
 #include"oldfunc.h"
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 //maked the exaple test x^4 here
 
 void example(gsl_vector *x, gsl_vector * fx){
