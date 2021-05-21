@@ -68,7 +68,7 @@ void example(gsl_vector * x, gsl_vector * fx) {
 
 //Rosenbracks valley func here.
 void rosenbrock (gsl_vector * R , gsl_vector * fR){
-	double scale = 1000;
+	
 	double gx,gy;
 	double x = gsl_vector_get(R,0);
 	double y = gsl_vector_get(R,1);
@@ -77,7 +77,7 @@ void rosenbrock (gsl_vector * R , gsl_vector * fR){
 	gy = 200*(y-(x*x));
 	gsl_vector_set(fR,0,gx);
 	gsl_vector_set(fR,1,gy);
-	gsl_vector_scale(fR,scale);
+	
 }
 
 
