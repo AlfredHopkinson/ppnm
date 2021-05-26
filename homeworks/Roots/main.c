@@ -48,22 +48,26 @@ void GS_solve(gsl_matrix* Qb, gsl_matrix* Rb, gsl_vector* b, gsl_vector* x){
 
 //maked the exaple test x^3 here
 
-//void example(gsl_vector *x, gsl_vector * fx){
-//	double t, e;
-//	t = gsl_vector_get(x,0);
-//	e = t*t*t;
-//	gsl_vector_set(fx,0,e);
-//}
-
-
-void example(gsl_vector * x, gsl_vector * fx) {
-	double x1 = gsl_vector_get(x,0);
-	double x2 = gsl_vector_get(x,1);
-
-	gsl_vector_set(fx,0,20*sin(x1)*cos(x2));
-	gsl_vector_set(fx,1,20*cos(x2));
-		
+void example(gsl_vector *x, gsl_vector * fx){
+	double t, e;
+	double scale = pow(0.001,-3);
+	for (int i = 0; i < x->size; i++) {
+		t = gsl_vector_get(x,0);
+		e = t*t*t;
+		gsl_vector_set(fx,0,e);
+	}
+	gsl_vector_scale(fx,scale);
 }
+
+
+//void example(gsl_vector * x, gsl_vector * fx) {
+//	double x1 = gsl_vector_get(x,0);
+//	double x2 = gsl_vector_get(x,1);
+//
+//	gsl_vector_set(fx,0,20*sin(x1)*cos(x2));
+//	gsl_vector_set(fx,1,20*cos(x2));
+		
+//}
 
 
 //Rosenbracks valley func here.
@@ -108,10 +112,9 @@ void newton(void f(gsl_vector* x,gsl_vector* fx), gsl_vector* x, double tol){
 			f(x,df);
 			gsl_vector_sub(df,fx);
 
-			for(int i=0;i<n;i++){
-				gsl_matrix_set(J,i,j,gsl_vector_get(df,i)/d_x);
-				gsl_vector_set(x,i,gsl_vector_get(x,i)-d_x);
-			}
+			for(int i=0;i<n;i++) gsl_matrix_set(J,i,j,gsl_vector_get(df,i)/d_x);
+				gsl_vector_set(x,j,gsl_vector_get(x,j)-d_x);
+			
 		}
 			gsl_vector_scale(fx,-1);
 			GS_decomp(J,R);
@@ -147,13 +150,13 @@ int main(){
 	printf("Simple check to start\n");
 	printf("\n");
 	//not to self the newton needs f, x, eps
-	gsl_vector * x = gsl_vector_alloc(2);
+	gsl_vector * x = gsl_vector_alloc(1);
 	double tol = 0.0001;
 	//we also need a value to be in the x vector
 	gsl_vector_set(x,0,10);
 
 	newton(example,x,tol);
-	printf("the root of x^4 is %10g\n\n",gsl_vector_get(x,0));
+	printf("the root of x^3 is %10g\n\n",gsl_vector_get(x,0));
 	gsl_vector_free(x);
 
 	//now to do ropsenbrocks valley we need to make a func to contain and then pass it thought the newton again
@@ -162,13 +165,13 @@ int main(){
 	gsl_vector * rosenvector = gsl_vector_alloc(2);
 	double rosenx = 1.4;
 	double roseny = 0.9;
-//	gsl_vector_set(rosenvector,0,rosenx);
-//	gsl_vector_set(rosenvector,1,roseny);
-//	newton(rosenbrock,rosenvector,tol);
-//	print_vector("The roots of the gradient of the Rosenbrock function equals = ",rosenvector);
+	gsl_vector_set(rosenvector,0,rosenx);
+	gsl_vector_set(rosenvector,1,roseny);
+	newton(rosenbrock,rosenvector,tol);
+	print_vector("The roots of the gradient of the Rosenbrock function equals = ",rosenvector);
 	//wouldnt work but i allways forget to free the vectors afterwards
 	gsl_vector_free(rosenvector);
-	gsl_vector_free(x);
+
 
 
 
