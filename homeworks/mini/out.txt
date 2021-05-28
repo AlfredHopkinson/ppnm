@@ -1,0 +1,11 @@
+PART A 
+
+
+Rosenbrock
+
+rosen min is x =          1 y =          1
+num iterations =        292
+Himmel
+
+himmel min is x =   -2.80512 y =    3.13131
+num iterations =         13

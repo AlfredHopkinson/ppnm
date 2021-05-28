@@ -5,7 +5,7 @@ LDLIBS += $(shell /usr/bin/gsl-config --libs)
 
 default: out.txt 
 
-main: main.o oldfunc.o 
+main: main.o  
 
 out.txt:main
 	./$< > out.txt
