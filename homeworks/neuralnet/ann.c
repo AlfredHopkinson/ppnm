@@ -30,7 +30,7 @@ void ann_free(ann* network){
 	//free the netwoork
 	gsl_vector_free(network->params);
 	free (network);
-	return 0;
+
 
 }
 
@@ -49,24 +49,44 @@ double ann_response (ann* network, double x){
 
 void ann_train (ann* network, gsl_vector* xs, gsl_vector* ys){
 
-	double delta(gsl_vector * p)
-	{
-		gsl_vector_memcpy(network->params,p);
-		double response = 0;
-		for(int i=0; i<xs->size; i++){
-			double x = gsl_vector_get(xs,i);
-			double y = ann_response(network,x);
-			double f = gsl_vector_get(ys,i);
-			response += fabs(y-f);
+//	void delta(gsl_vector * p)
+//	{
+//		gsl_vector_memcpy(network->params,p);
+//		double response = 0;
+//		for(int i=0; i<xs->size; i++){
+//			double x = gsl_vector_get(xs,i);
+//			double y = ann_response(network,x);
+//			double f = gsl_vector_get(ys,i);
+//			response += fabs(y-f);
+//		}
+//		return response/xs -> size;
+//	}
+
+
+	double cf(gsl_vector *q){
+		double cfq = 0;
+		gsl_vector_memcpy(network->params,q);
+		for(int i =0;i<xs->size;i++){
+			cfq += pow(ann_response(network,gsl_vector_get(xs,i))-gsl_vector_get(ys,i),2);
 		}
-		return response/xs -> size;
+		return cfq;
 	}
-	gsl_vector * q = gsl_vector_alloc(3*network->n);
-	gsl_vector_memcpy(q, network->params);
-	int step = quasinewton(delta,q,1e-3);
-	gsl_vector_memcpy(network->params,q);
+	gsl_vector *q = gsl_vector_alloc(network->params->size);
+	gsl_vector_memcpy(q,network->params);
+	int step = quasinewton(cf,g,q,1e-3);
 	printf("The number of steps taken to train is = %i\n",step);
+	gsl_vector_memcpy(network->params,q);
 	gsl_vector_free(q);
+}
+
+
+	
+//	gsl_vector * q = gsl_vector_alloc(3*network->n);
+//	gsl_vector_memcpy(q, network->params);
+//	int step = quasinewton(delta,q,1e-3);
+//	gsl_vector_memcpy(network->params,q);
+//	printf("The number of steps taken to train is = %i\n",step);
+//	gsl_vector_free(q);
 	//do the cost function
 	
 
@@ -78,7 +98,7 @@ void ann_train (ann* network, gsl_vector* xs, gsl_vector* ys){
 	//gsl_vector_free(q);
 	
 
-}
+//}
 
 
 

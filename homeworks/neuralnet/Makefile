@@ -13,7 +13,7 @@ out.txt:main
 
 .PHONEY:clean
 clean:	
-	$(RM) main.o main out.txt
+	$(RM) main.o main out.txt num.txt mini.o mini ann.o ann
 
 test:
 	@echo $(CFLAGS)

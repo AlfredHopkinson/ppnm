@@ -60,21 +60,21 @@ double backtrack(double f(gsl_vector *x), gsl_vector * x, gsl_vector * gf, gsl_v
 
 
 
-int quasinewton(double f(gsl_vector *x), gsl_vector *x,double eps){
+
+int quasinewton(double f(gsl_vector *x),void gradient(gsl_vector *x, gsl_vector *df),gsl_vector *x,double eps){
 	int n = x->size;
 	int iter = 0;
-
+	
 	gsl_vector *df = gsl_vector_alloc(n);
 	gsl_vector *y = gsl_vector_alloc(n);
 	gsl_vector *s = gsl_vector_alloc(n);
 	gsl_matrix *H = gsl_matrix_alloc(n,n);
 	gsl_vector *Hy = gsl_vector_alloc(n);
 	double HyTs;
+
 	gsl_matrix_set_identity(H);
-
 	gradient(x,df);
-
-	while( gsl_blas_dnrm2(df)>eps){
+	while(gsl_blas_dnrm2(df)>eps){
 		iter++;
 		gsl_blas_dgemv(CblasNoTrans,-1.0,H,df,0.0,s);
 
@@ -84,6 +84,7 @@ int quasinewton(double f(gsl_vector *x), gsl_vector *x,double eps){
 		gsl_vector_add(x,s);
 		gradient(x,y);
 		gsl_vector_sub(y,df);
+
 		gsl_blas_dgemv(CblasNoTrans,1.0,H,y,0.0,Hy);
 		gsl_blas_dgemv(CblasNoTrans,1.0,H,s,0.0,df);
 		gsl_blas_ddot(Hy,s,&HyTs);
@@ -98,8 +99,51 @@ int quasinewton(double f(gsl_vector *x), gsl_vector *x,double eps){
 	gsl_vector_free(s);
 	gsl_matrix_free(H);
 	gsl_vector_free(Hy);
-	return iter;
+return iter;
 }
+
+
+
+//int quasinewton(double f(gsl_vector *x), void gradient(gsl_vector *x, gsl_vector *df),  gsl_vector *x,double eps){
+//	int n = x->size;
+//	int iter = 0;
+//
+//	gsl_vector *df = gsl_vector_alloc(n);
+//	gsl_vector *y = gsl_vector_alloc(n);
+//	gsl_vector *s = gsl_vector_alloc(n);
+//	gsl_matrix *H = gsl_matrix_alloc(n,n);
+//	gsl_vector *Hy = gsl_vector_alloc(n);
+//	double HyTs;
+//	gsl_matrix_set_identity(H);
+//
+//	gradient(x,df);
+//
+//	while( gsl_blas_dnrm2(df)>eps){
+//		iter++;
+//		gsl_blas_dgemv(CblasNoTrans,-1.0,H,df,0.0,s);
+//
+//		double lambda = backtrack(f,x,df,s,H,1);
+//
+//		gsl_vector_scale(s,lambda);
+//		gsl_vector_add(x,s);
+//		gradient(x,y);
+//		gsl_vector_sub(y,df);
+//		gsl_blas_dgemv(CblasNoTrans,1.0,H,y,0.0,Hy);
+//		gsl_blas_dgemv(CblasNoTrans,1.0,H,s,0.0,df);
+//		gsl_blas_ddot(Hy,s,&HyTs);
+//		gsl_vector_sub(s,Hy);
+//		gsl_blas_dger(1.0/HyTs,s,df,H);
+//
+//		gradient(x,df);
+//	}
+//
+//	gsl_vector_free(df);
+//	gsl_vector_free(y);
+//	gsl_vector_free(s);
+//	gsl_matrix_free(H);
+//	gsl_vector_free(Hy);
+//	return iter;
+//}
 
 
 
