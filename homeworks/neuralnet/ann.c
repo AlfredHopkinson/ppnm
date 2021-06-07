@@ -47,6 +47,8 @@ double ann_response (ann* network, double x){
 
 }
 
+double cf(gsl_vector* q);
+
 void ann_train (ann* network, gsl_vector* xs, gsl_vector* ys){
 
 //	void delta(gsl_vector * p)
@@ -63,18 +65,10 @@ void ann_train (ann* network, gsl_vector* xs, gsl_vector* ys){
 //	}
 
 
-	double cf(gsl_vector *q){
-		double cfq = 0;
-		gsl_vector_memcpy(network->params,q);
-		for(int i =0;i<xs->size;i++){
-			cfq += pow(ann_response(network,gsl_vector_get(xs,i))-gsl_vector_get(ys,i),2);
-		}
-		return cfq;
-	}
+	
 	gsl_vector *q = gsl_vector_alloc(network->params->size);
 	gsl_vector_memcpy(q,network->params);
-	int step = quasinewton(cf,g,q,1e-3);
-	printf("The number of steps taken to train is = %i\n",step);
+	quasinewton(cf,q,1e-3);
 	gsl_vector_memcpy(network->params,q);
 	gsl_vector_free(q);
 }
