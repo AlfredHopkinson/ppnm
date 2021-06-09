@@ -70,6 +70,7 @@ void ann_train (ann* network, gsl_vector* xs, gsl_vector* ys){
 	gsl_vector_memcpy(q,network->params);
 	quasinewton(cf,q,1e-3);
 	gsl_vector_memcpy(network->params,q);
+	
 	gsl_vector_free(q);
 }
 
