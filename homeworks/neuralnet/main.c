@@ -72,12 +72,13 @@ int main(){
 	network = ann_alloc(n,activation_func);
 
 //	printf("PART 2\n");
-	for(int i=0;i<n;i++){
-		gsl_vector_set(network->params,3*i,a+(b-a)*i/(n-1));
-		gsl_vector_set(network->params,3*i+1,1);
-		gsl_vector_set(network->params,3*i+2,1);
-		
-		}
+//	assign first params
+//	for(int i=0;i<n;i++){
+//		gsl_vector_set(network->params,3*i,a+(b-a)*i/(n-1));
+//		gsl_vector_set(network->params,3*i+1,1);
+//		gsl_vector_set(network->params,3*i+2,1);
+//		
+//		}
 		
 
 		//now I need to make the training and data   *****xs and ys remember******
@@ -87,10 +88,26 @@ int main(){
 		xs = gsl_vector_alloc(nn);
 		ys = gsl_vector_alloc(nn);
 
+		//generating x and y numbers
+	for(int i=0; i<nn; i++){
+		double x = a+(b-a)*i/(nn-1);
+		double fy = activation_func(x);
+		gsl_vector_set(xs,i,x);
+		gsl_vector_set(ys,i,fy);
+	}
+
+	for(int i=0;i<n;i++){
+		gsl_vector_set(network->params,3*i,a+(b-a)*i/(n-1));
+		gsl_vector_set(network->params,3*i+1,1);
+		gsl_vector_set(network->params,3*i+2,1);
+	}
+
+
+
 		//had this going into out.txt but this got really messy so putting the output into num.txt
 //		printf("PART 5\n");
 		FILE * num = fopen("num.txt","w");
-		linspace(xs,a,b,nn);
+//		linspace(xs,a,b,nn);
 //		printf("PART 6\n");
 		for(int i=0;i<nn;i++){
 			gsl_vector_set(ys,i,f(gsl_vector_get(xs,i)));
@@ -99,13 +116,13 @@ int main(){
 //		printf("PART 7\n");
 		ann_train(network,xs,ys);
 //		printf("PART 8\n");
-		print_vector("p = ",network->params);
+//		print_vector("p = ",network->params);
 
-		for(int i=0; i<x; i++) {
+		for(int i=0; i<nn; i++) {
 			double x = gsl_vector_get(xs, i);
 			double f = gsl_vector_get(ys, i);
 			double val = ann_response(network,x);
-			printf("x=%10g, f(x)=%10g\n", x, f);
+			printf("%10g %10g %10g\n", x, f,val);
 		}
 											
 

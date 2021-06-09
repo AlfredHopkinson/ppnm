@@ -1,0 +1,10 @@
+\
+set terminal png;\
+set output "NN.pyxplot.png";\
+set xlabel "x";\
+set ylabel "y";\
+set title "SIR Model";\
+plot \
+"out.txt" using 1:2 with linespoints title "generated points"\
+,"out.txt" using 1:3 with linespoints title "trained"\
+

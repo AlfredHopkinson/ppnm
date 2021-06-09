@@ -15,6 +15,7 @@
 
 
 
+
 ann* ann_alloc(int n, double(*f)(double)){
 
 	ann * network = malloc(sizeof(ann));
@@ -34,18 +35,41 @@ void ann_free(ann* network){
 
 }
 
-double ann_response (ann* network, double x){
 
-	double response = 0;
-	for(int i = 0; i<network->n; i++){//set the paramters
-		double a = gsl_vector_get(network->params,0*network->n+i);
-		double b = gsl_vector_get(network->params,1*network->n+i);
-		double w = gsl_vector_get(network->params,2*network->n+i);
-		response += network -> f((x+a)/b)*w;
+double ann_response(ann* network, double x){
+	int n = network->n;
+	double(*f)(double) = network->f;
+	gsl_vector* params = network->params;
+	double sum=0;
+	for(int i=0; i<n; i++){
+		int begin = i*3;
+		double a = gsl_vector_get(params, begin);
+		double b = gsl_vector_get(params, begin+1);
+		double w = gsl_vector_get(params, begin+2);
+		sum += f((x-a)/b)*w;
 	}
-	return response;
-
+	return sum;
 }
+
+
+
+
+
+
+
+//THis wont work so trying a different approach
+//double ann_response (ann* network, double x){
+
+//	double response = 0;
+//	for(int i = 0; i<network->n; i++){//set the paramters
+//		double a = gsl_vector_get(network->params,0*network->n+i);
+//		double b = gsl_vector_get(network->params,1*network->n+i);
+//		double w = gsl_vector_get(network->params,2*network->n+i);
+//		response += network -> f((x+a)/b)*w;
+//	}
+//	return response;
+
+//}
 
 double cf(gsl_vector* q);
 
