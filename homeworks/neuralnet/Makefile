@@ -3,17 +3,17 @@ CFLAGS = -Wall -O1 -std=gnu11
 CFLAGS += $(shell /usr/bin/gsl-config --cflags)
 LDLIBS += $(shell /usr/bin/gsl-config --libs)
 
-#default: out.txt num.txt
+default: out.txt num.txt
 
-#main: main.o ann.o mini.o
+main: main.o ann.o mini.o
 
-#out.txt:main
-#	./$< > out.txt
+out.txt:main
+	./$< > out.txt
 
 
-#.PHONEY:clean
-#clean:	
-#	$(RM) main.o main out.txt num.txt mini.o mini ann.o ann
+.PHONEY:clean
+clean:	
+	$(RM) main.o main out.txt num.txt mini.o mini ann.o ann
 
 
 NN.pyxplot.png: out.txt num.txt
@@ -22,7 +22,7 @@ NN.pyxplot.png: out.txt num.txt
 	set output "$@";\
 	set xlabel "x";\
 	set ylabel "y";\
-	set title "SIR Model";\
+	set title "The generated vs tarined points";\
 	plot \
 	"out.txt" using 1:2 with linespoints title "generated points"\
 	,"out.txt" using 1:3 with linespoints title "trained"\
