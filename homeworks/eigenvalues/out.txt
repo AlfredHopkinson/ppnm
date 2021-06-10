@@ -67,3 +67,8 @@ V^t V=
    -2.35922e-16   -8.32667e-17   -1.52656e-16   -3.07913e-17              1   -1.38778e-16
    -1.66533e-16   -5.55112e-17   -1.80411e-16    2.46331e-16   -1.38778e-16              1
 all the checks confirm the implimentation works
+
+
+
+Part B starts here
+

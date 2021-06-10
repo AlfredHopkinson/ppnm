@@ -1,0 +1,11 @@
+\
+set terminal png;\
+set output "Modes.pyxplot.png";\
+set xlabel "x";\
+set ylabel "y";\
+set title "Particle in a box eigen modes";\
+plot \
+"quantumeigenvalues.txt" using 1:2 with line title "Ground State"\
+,"quantumeigenvalues.txt" using 1:3 with line title "First"\
+,"quantumeigenvalues.txt" using 1:4 with line title "Second"\
+

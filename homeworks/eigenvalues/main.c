@@ -9,6 +9,17 @@
 #include"eigenfunc.h"
 
 
+//void print_matrix(const char* p, gsl_matrix * A){
+//	printf("%s\n",p);
+//	for(int i=0;i<A->size1;i++){
+//		for(int j=0;j<A->size2;j++){
+//			printf("%10g",gsl_matrix_get(A,i,j));
+//		}
+//		printf("\n");
+//	}
+//}
+
+
 int main(){
 	
 	printf("PART A\n");
@@ -70,6 +81,65 @@ int main(){
 
 	printf("all the checks confirm the implimentation works\n");
 
+	//
+	//Part B starts here
+	
+	printf("\n\n\n");
+	printf("Part B starts here\n\n");
+
+	//build the hamiltonian matrix
+	
+	int nn = 100;//started with 20 but this made an awful graph so I will crank it up
+	double s=1.0/(nn+1);
+	gsl_matrix* H = gsl_matrix_alloc(nn,nn);
+	for(int i = 0;i<nn-1;i++){
+		gsl_matrix_set(H,i,i,-2);
+		gsl_matrix_set(H,i,i+1,1);
+		gsl_matrix_set(H,i+1,i,1);
+	}
+	gsl_matrix_set(H,nn-1,nn-1,-2);
+	gsl_matrix_scale(H,-1/s/s);
+
+	//diagonalize with my jacobhi
+	
+	gsl_matrix* G = gsl_matrix_alloc(nn,nn);
+	jacobi_diag(H,G);
+
+//	print_matrix("G=",G);
+
+
+
+	//check energies are correct
+	FILE * energies = fopen("energyout.txt","w");	
+
+
+	for (int k=0;k<nn/3;k++){
+		double exact = M_PI*M_PI*(k+1)*(k+1);
+		double calculated = gsl_matrix_get(H,k,k);
+		fprintf(energies,"%i %g %g\n", k, calculated, exact);
+	}
+	fclose(energies);
+
+	int flip[3] = {-1,-1,-1};
+	double f = 1.0/sqrt(s);
+
+
+
+	FILE * quantuneigenvalues = fopen("quantumeigenvalues.txt","w");
+	//this is all well and good but I cant get it to plot only one set at a time so I am going to alter it so I can
+	fprintf(quantuneigenvalues, "%g %g %g %g\n",0.0,0.0,0.0,0.0);
+	for (int k=0; k<nn;k++){
+//		fprintf(quantuneigenvalues,"%g %g\n",0.0,0.0);
+//		for(int i=0; i<nn; i++)
+//			fprintf(quantuneigenvalues,"%g %g\n",(i+1.0)/(nn+1), gsl_matrix_get(G,i,k));
+//		fprintf(quantuneigenvalues,"%g %g\n",1.0,0.0);
+		fprintf(quantuneigenvalues, "%g %g %g %g\n",(k+1.0)/(nn+1),-1.0*gsl_matrix_get(G,k,0),gsl_matrix_get(G,k,1),gsl_matrix_get(G,k,2));
+	}
+	fprintf(quantuneigenvalues, "%g %g %g %g\n",1.0,0.0,0.0,0.0);
+	fclose(quantuneigenvalues);
+
+	gsl_matrix_free(H);
+	gsl_matrix_free(G);
 
 
 
