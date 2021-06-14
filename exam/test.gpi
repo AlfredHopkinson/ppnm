@@ -1,0 +1,10 @@
+\
+set terminal png;\
+set output "Simple.pyxplot.png";\
+set xlabel "x";\
+set ylabel "y";\
+set title "Example of the subspline on a simple generated points";\
+plot \
+"simple_out.txt" using 1:2 with line title "Akima sub-spline"\
+,"simple_points.txt" using 1:2 with points title "given points"\
+

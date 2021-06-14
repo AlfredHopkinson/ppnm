@@ -9,6 +9,7 @@
 #include <gsl/gsl_integration.h>
 #define RND ((double)rand()/RAND_MAX)
 #include<float.h>
+#include"spline.h"
 
 //include the binsearch from previous problem
 int binsearch(int n, double* x, double z){ 
