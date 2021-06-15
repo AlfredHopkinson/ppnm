@@ -16,7 +16,7 @@ clean:
 	$(RM) main.o main out.txt simple_points.txt simple_out.txt cospoint_out.txt cos_out.txt 
 
 
-#Simple.pyxplot.png: out.txt simple_out.txt
+#`Simple.pyxplot.png: out.txt simple_out.txt
 #	echo '\
 	set terminal png;\
 	set output "$@";\
@@ -38,7 +38,9 @@ clean:
 	set title "Example of the subspline for cos";\
 	plot \
 	"cospoint_out.txt" using 1:2 with points title "generated points"\
+	,"cospoint_out.txt" using 1:3 with points title "derivitive"\
 	,"cos_out.txt" using 1:2 with line title "spline"\
+	,"cos_out.txt" using 1:3 with line title "akima"\
 	' | tee test.gpi | pyxplot
 
 
