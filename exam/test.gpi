@@ -1,12 +1,11 @@
 \
 set terminal png;\
-set output "cos.pyxplot.png";\
+set output "Simple.pyxplot.png";\
 set xlabel "x";\
 set ylabel "y";\
-set title "Example of the subspline for cos";\
+set title "Example of the subspline on a simple generated points";\
 plot \
-"cospoint_out.txt" using 1:2 with points title "generated points"\
-,"cospoint_out.txt" using 1:3 with points title "derivitive"\
-,"cos_out.txt" using 1:2 with line title "spline"\
-,"cos_out.txt" using 1:3 with line title "akima"\
+"simple_out.txt" using 1:2 with line title "Akima sub-spline"\
+,"simple_points.txt" using 1:2 with points title "given points"\
+,"simple_out.txt" using 1:3 with line title "cubic sub-spline"\
 

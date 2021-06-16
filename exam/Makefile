@@ -3,21 +3,21 @@ CFLAGS = -Wall -O1 -std=gnu11
 CFLAGS += $(shell /usr/bin/gsl-config --cflags)
 LDLIBS += $(shell /usr/bin/gsl-config --libs)
 
-default: out.txt
+#default: out.txt
+	
+#main: main.o 
 
-main: main.o 
-
-out.txt:main
-	./$< > out.txt
-
-
-.PHONEY:clean
-clean:	
-	$(RM) main.o main out.txt simple_points.txt simple_out.txt cospoint_out.txt cos_out.txt 
+#out.txt:main
+#	./$< > out.txt
 
 
-#`Simple.pyxplot.png: out.txt simple_out.txt
-#	echo '\
+#.PHONEY:clean
+#clean:	
+#	$(RM) main.o main out.txt simple_points.txt simple_out.txt cospoint_out.txt cos_out.txt 
+
+
+Simple.pyxplot.png: out.txt simple_out.txt
+	echo '\
 	set terminal png;\
 	set output "$@";\
 	set xlabel "x";\
@@ -26,11 +26,12 @@ clean:
 	plot \
 	"simple_out.txt" using 1:2 with line title "Akima sub-spline"\
 	,"simple_points.txt" using 1:2 with points title "given points"\
+	,"simple_out.txt" using 1:3 with line title "cubic sub-spline"\
 	' | tee test.gpi | pyxplot
 
 
-#cos.pyxplot.png: out.txt cos_out.txt cospoint_out.txt
-#	echo '\
+cos.pyxplot.png: out.txt cos_out.txt cospoint_out.txt
+	echo '\
 	set terminal png;\
 	set output "$@";\
 	set xlabel "x";\

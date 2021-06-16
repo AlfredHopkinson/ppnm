@@ -106,21 +106,22 @@ cubic_spline* cubic_spline_alloc(int n, double *x, double *y, double *dy){
 
 
 	cubic_spline *cs = (cubic_spline*)malloc(sizeof(cubic_spline));
-	printf("part 1 sub");
+	
 	cs->x = (double*)malloc(n*sizeof(double));
 	cs->y = (double*)malloc(n*sizeof(double));
+	cs->dy = (double*)malloc(n*sizeof(double));
 	cs->b = (double*)malloc((n-1)*sizeof(double));
 	cs->c = (double*)malloc((n-1)*sizeof(double));
 	cs->d = (double*)malloc((n-1)*sizeof(double));
-	printf("part 1 sub");
+	
 
-//	cs->n =n; for(int i=0;i<n;i++){cs->x[i]=x[i]; cs->y[i]=y[i]; cs->dy[i]=dy[i];}
+	cs->n =n; for(int i=0;i<n;i++){cs->x[i]=x[i]; cs->y[i]=y[i]; cs->dy[i] = dy[i];}
 	cs->b[0] = dp[0]; cs->b[1] = (dp[0]+dp[1])/2;
-	for(int i=2;i<n-2;i++){
-		double w1=fabs (dp[i+1]-dp[i]), w2=fabs(dp[i-1]-dp[i-2]);
-		if (w1+w2==0) cs->b[i]=(dp[i+1]+dp[i])/2;
-		else cs->b[i]=(w1*dp[i-1]+w2*dp[i])/(w1+w2);
-	}
+//	for(int i=2;i<n-2;i++){
+//		double w1=fabs (dp[i+1]-dp[i]), w2=fabs(dp[i-1]-dp[i-2]);
+//		if (w1+w2==0) cs->b[i]=(dp[i+1]+dp[i])/2;
+//		else cs->b[i]=(w1*dp[i-1]+w2*dp[i])/(w1+w2);
+//	}
 	printf("part 2 sub");
 	for (int i=0;i<n-1;i++){
 		cs->c[i] = (3*(p[i]-cs->b[i])/h[i])-dp[i];
@@ -134,7 +135,7 @@ cubic_spline* cubic_spline_alloc(int n, double *x, double *y, double *dy){
 
 
 double cubic_spline_eval(cubic_spline *cs, double z){
-//	assert(z>=cs->x[0] && z<=cs->x[cs->n-1]);
+	assert(z>=cs->x[0] && z<=cs->x[cs->n-1]);
 	int i = 0, j=cs->n-1;
 	while (j-i>1){int m=(i+j)/2; if (z>cs->x[m]) i=m; else j=m;}
 	double h=z-cs->x[i];
@@ -162,7 +163,7 @@ void cubic_spline_free(cubic_spline *cs){
 int main(){
 //made some example data for the data set and I wanted it to be like the example in the chapter
 //	double x[] = {0,1,2,3,4,5,6,7,8};
-	printf("part 1");
+	
 	double y[] = {-1,-1,-1,0,1,1,1};
 	double dy[] = {0,0,0,1,0,0,0}; //a simple derivitive to start
 	int n = (7);
@@ -173,19 +174,19 @@ int main(){
 		x[i] = i;
 		fprintf(simplepoints, "%10g %10g %10g\n", x[i], y[i], dy[i]);
 	}
-	printf("part 2");
+	
 
 
 	akima_spline *s = akima_spline_alloc(n,x,y);
 
 	cubic_spline *cs = cubic_spline_alloc(n,x,y,dy);
-	printf("part 3");
+	
 	FILE* simple_out = fopen("simple_out.txt","w");
 	double z = 0, thin = 10;
 	for(z=0; z<=thin*(n-1);z++){
 		fprintf(simple_out, "%10g %10g %10g\n",z/thin, akima_spline_eval(s,z/thin), cubic_spline_eval(cs,z/thin));
 	}
-	printf("part 4");
+	
 
 	//doing a simple cos test
 	int nn = 10;
@@ -196,15 +197,15 @@ int main(){
 	FILE* cospoint_out = fopen("cospoint_out.txt","w");
 	for (i=0;i<nn;i++){
 		xc[i] = 2*M_PI*i/nn;
-		yc[i] = cos(xc[i]);
-		dyc[i] = -sin(xc[i]);
+		yc[i] = sin(xc[i]);
+		dyc[i] = cos(xc[i]);
 		fprintf(cospoint_out, "%10g %10g %10g\n",xc[i], yc[i], dyc[i]);
 		}
-	printf("part 5");
+	
 //	akima_spline *ss = akima_spline_alloc(nn,xc,yc);
 	cubic_spline *ccs = cubic_spline_alloc(nn,xc,yc,dyc);
 	akima_spline *ss = akima_spline_alloc(nn,xc,yc);
-	printf("part 6");
+	
 	FILE* cos_out = fopen("cos_out.txt","w");
 	double zz = 0.1; //I want to generate more points here then I tried for the last one
 	for (double i =0; i<= 2*M_PI; i+=zz){
