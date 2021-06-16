@@ -135,7 +135,7 @@ cubic_spline* cubic_spline_alloc(int n, double *x, double *y, double *dy){
 
 
 double cubic_spline_eval(cubic_spline *cs, double z){
-	assert(z>=cs->x[0] && z<=cs->x[cs->n-1]);
+//	assert(z>=cs->x[0] && z<=cs->x[cs->n-1]);
 	int i = 0, j=cs->n-1;
 	while (j-i>1){int m=(i+j)/2; if (z>cs->x[m]) i=m; else j=m;}
 	double h=z-cs->x[i];
@@ -197,8 +197,8 @@ int main(){
 	FILE* cospoint_out = fopen("cospoint_out.txt","w");
 	for (i=0;i<nn;i++){
 		xc[i] = 2*M_PI*i/nn;
-		yc[i] = sin(xc[i]);
-		dyc[i] = cos(xc[i]);
+		yc[i] = cos(xc[i]);
+		dyc[i] = -sin(xc[i]);
 		fprintf(cospoint_out, "%10g %10g %10g\n",xc[i], yc[i], dyc[i]);
 		}
 	
@@ -207,7 +207,7 @@ int main(){
 	akima_spline *ss = akima_spline_alloc(nn,xc,yc);
 	
 	FILE* cos_out = fopen("cos_out.txt","w");
-	double zz = 0.1; //I want to generate more points here then I tried for the last one
+	double zz = 0.01; //I want to generate more points here then I tried for the last one
 	for (double i =0; i<= 2*M_PI; i+=zz){
 		double cubic_eval = cubic_spline_eval(ccs, i);
 		fprintf(cos_out,"%10g %10g %10g\n",i,cubic_eval, akima_spline_eval(ss,i));

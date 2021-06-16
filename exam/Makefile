@@ -3,6 +3,20 @@ CFLAGS = -Wall -O1 -std=gnu11
 CFLAGS += $(shell /usr/bin/gsl-config --cflags)
 LDLIBS += $(shell /usr/bin/gsl-config --libs)
 
+report.pdf: report.tex 
+	pdflatex $<
+	pdflatex $<
+#	bibtex $<
+#	pdflatex $<
+	
+#fig-gpl.tex : fig-gpl.gpi out.data.txt
+#	gnuplot $<
+
+#fig-pyxplot.pdf: fig-pyxplot.gpi out.data.txt
+#	pyxplot $<
+
+
+
 #default: out.txt
 	
 #main: main.o 
@@ -16,8 +30,8 @@ LDLIBS += $(shell /usr/bin/gsl-config --libs)
 #	$(RM) main.o main out.txt simple_points.txt simple_out.txt cospoint_out.txt cos_out.txt 
 
 
-Simple.pyxplot.png: out.txt simple_out.txt
-	echo '\
+#Simple.pyxplot.png: out.txt simple_out.txt
+#	echo '\
 	set terminal png;\
 	set output "$@";\
 	set xlabel "x";\
