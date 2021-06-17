@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.20 (TeX Live 2019/Debian) (preloaded format=pdflatex 2021.2.19)  16 JUN 2021 16:08
+This is pdfTeX, Version 3.14159265-2.6-1.40.20 (TeX Live 2019/Debian) (preloaded format=pdflatex 2021.2.19)  17 JUN 2021 09:20
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -56,7 +56,7 @@ File: l3backend-pdfmode.def 2020-02-03 L3 backend support: PDF mode
 \l__kernel_color_stack_int=\count175
 \l__pdf_internal_box=\box45
 )
-No file report.aux.
+(./report.aux)
 \openout1 = `report.aux'.
 
 LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 7.
@@ -73,6 +73,7 @@ LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 7.
 LaTeX Font Info:    ... okay on input line 7.
 LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 7.
 LaTeX Font Info:    ... okay on input line 7.
+
 (/usr/share/texlive/texmf-dist/tex/context/base/mkii/supp-pdf.mkii
 [Loading MPS to PDF converter (version 2006.09.02).]
 \scratchcounter=\count176
@@ -121,39 +122,25 @@ Type  H <return>  for immediate help.
                                                   
 l.12 \end{abstract}
                    
-? H
-Your command was ignored.
-Type  I <command> <return>  to replace it with another command,
-or  <return>  to continue without it.
-? h
-Sorry, I already gave what help I could...
-Maybe you should try asking a human?
-An error might have occurred before I noticed any problems.
-``If all else fails, read the instructions.''
-
 ? 
 [1{/var/lib/texmf/fonts/map/pdftex/updmap/pdftex.map}
 
 
 
-] (./report.aux)
-
-LaTeX Warning: Label(s) may have changed. Rerun to get cross-references right.
-
- ) 
+] (./report.aux) ) 
 Here is how much of TeX's memory you used:
- 1178 strings out of 483183
- 17263 string characters out of 5966292
- 243538 words of memory out of 5000000
+ 1180 strings out of 483183
+ 17285 string characters out of 5966292
+ 243541 words of memory out of 5000000
  16230 multiletter control sequences out of 15000+600000
  536313 words of font info for 37 fonts, out of 8000000 for 9000
  14 hyphenation exceptions out of 8191
  30i,7n,25p,204b,209s stack positions out of 5000i,500n,10000p,200000b,80000s
- </home/alfie/.texlive2019/texmf-var/fonts/pk/ljfour/jknappen/ec/tcrm1000.600
-pk></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx12.pfb></u
-sr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmr10.pfb></usr/shar
-e/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmr12.pfb></usr/share/texli
-ve/texmf-dist/fonts/type1/public/amsfonts/cm/cmr17.pfb>
+ </home/alfie/.texlive2019/texmf-var/fonts/pk/ljfour/jknappen
+/ec/tcrm1000.600pk></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/c
+m/cmbx12.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmr1
+0.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmr12.pfb><
+/usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmr17.pfb>
 Output written on report.pdf (1 page, 51426 bytes).
 PDF statistics:
  29 PDF objects out of 1000 (max. 8388607)

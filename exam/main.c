@@ -116,7 +116,11 @@ cubic_spline* cubic_spline_alloc(int n, double *x, double *y, double *dy){
 	
 
 	cs->n =n; for(int i=0;i<n;i++){cs->x[i]=x[i]; cs->y[i]=y[i]; cs->dy[i] = dy[i];}
-	cs->b[0] = dp[0]; cs->b[1] = (dp[0]+dp[1])/2;
+	cs->b[0] = dy[0]; cs->b[1] = (dy[0]+dy[1])/2;
+	
+	for(int i =2; i<n-2; i++){
+		cs->b[i] = dy[i];
+	}
 //	for(int i=2;i<n-2;i++){
 //		double w1=fabs (dp[i+1]-dp[i]), w2=fabs(dp[i-1]-dp[i-2]);
 //		if (w1+w2==0) cs->b[i]=(dp[i+1]+dp[i])/2;
@@ -189,18 +193,42 @@ int main(){
 	
 
 	//doing a simple cos test
-	int nn = 10;
+	int nn = 100;
+	int nnn = 10;
 	int i = 0;
+	double xce[nnn],yce[nnn],dyce[nnn];
 	double xc[nn],yc[nn],dyc[nn];
 
 
 	FILE* cospoint_out = fopen("cospoint_out.txt","w");
+	for (i=0;i<nnn;i++){
+		xce[i] = 2*M_PI*i/nnn;
+		yce[i] = cos(xce[i]);
+		dyce[i] = -sin(xce[i]);
+		printf("herer1");
+		fprintf(cospoint_out, "%10g %10g %10g\n",xce[i], yce[i], dyce[i]);
+		}
+	double ww = 100;
+	
+	FILE* check = fopen("check.txt","w");
 	for (i=0;i<nn;i++){
 		xc[i] = 2*M_PI*i/nn;
 		yc[i] = cos(xc[i]);
 		dyc[i] = -sin(xc[i]);
-		fprintf(cospoint_out, "%10g %10g %10g\n",xc[i], yc[i], dyc[i]);
-		}
+	
+	
+//	for (i=0;i<nn;i++){
+//		for(int q=0;q<nn;q+=ww){
+//		xc[i] = 2*M_PI*i/nn;
+//			xc[i] = 2*M_PI*q/nn;
+//			yc[i] = cos(xc[i]);
+//			dyc[i] = -sin(xc[i]);
+		fprintf(check,"%10g %10g %10g\n",xc[i],yc[i],dyc[i]);
+		
+	}
+
+
+
 	
 //	akima_spline *ss = akima_spline_alloc(nn,xc,yc);
 	cubic_spline *ccs = cubic_spline_alloc(nn,xc,yc,dyc);
@@ -211,7 +239,11 @@ int main(){
 	for (double i =0; i<= 2*M_PI; i+=zz){
 		double cubic_eval = cubic_spline_eval(ccs, i);
 		fprintf(cos_out,"%10g %10g %10g\n",i,cubic_eval, akima_spline_eval(ss,i));
+
 	}
+
+
+
 
 	akima_spline_free(s);
 	cubic_spline_free(cs);
