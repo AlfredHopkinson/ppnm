@@ -12,6 +12,18 @@
 //#include"spline.h"
 
 
+
+int binsearch(int n, double* x, double z){/* locates the interval for z by bisection */ 
+	int i=0, j=n-1;
+	while(j-i>1){
+		int mid=(i+j)/2;
+		if(z>x[mid]) i=mid; else j=mid;
+		}
+	return i;
+}
+
+
+
 typedef struct {int n; double *x,*y,*b,*c,*d;} akima_spline;
 akima_spline* akima_spline_alloc(int n, double *x, double *y){
 	assert(n>2); double h[n-1],p[n-1];
@@ -156,9 +168,31 @@ void cubic_spline_free(cubic_spline *cs){
 	free(cs);
 }
 
+// now its time to do the derivitive and integral 
+// looked at my examples from the integ and it needs a interval search and then needs to return the differentiated eqn so calc this then put in tomorrow
 
 
+double cubic_spline_deriv(cubic_spline *cs, double z){
+	int i = binsearch(cs->n,cs->x,z);
+	double h=z-cs->x[i];
+	return (cs->b[i]+2*cs->c[i]*h+3*cs->d[i]*h*h);
+}
+				
 
+
+// took the integration one in basic form from the cubic spline from the start of the homeworks
+int  cubic_spline_integ(cubic_spline *cs, double z){
+	int i = binsearch(cs->n,cs->x,z);
+	double integ =0;
+	double h;
+	for (int j = 0; j < i; j++){
+		h = cs->x[j+1] - cs->x[j];
+		integ += h*(cs->y[j] + h*(cs->b[j]/2 + h*(cs->c[j]/3+cs->d[j]*h/4)));
+	}
+	h = z-cs->x[i];
+	integ += h*(cs->y[i] + h*(cs->b[i]/2 + h*(cs->c[i]/3+cs->d[i]*h/4)));
+	return integ;
+}
 
 
 
@@ -205,7 +239,7 @@ int main(){
 		xce[i] = 2*M_PI*i/nnn;
 		yce[i] = cos(xce[i]);
 		dyce[i] = -sin(xce[i]);
-		printf("herer1");
+		
 		fprintf(cospoint_out, "%10g %10g %10g\n",xce[i], yce[i], dyce[i]);
 		}
 	double ww = 100;
@@ -242,7 +276,13 @@ int main(){
 
 	}
 
-
+	FILE* intder = fopen("intder.txt","w");
+	double zzz = 0.01;
+	for(double i=0;i<=2*M_PI; i+=zzz){
+		double cubic_der = cubic_spline_deriv(ccs,i);
+		double cubic_integ = cubic_spline_integ(ccs,i);
+		fprintf(intder,"%10g %10g %10g\n", i,cubic_der, cubic_integ);
+	}
 
 
 	akima_spline_free(s);

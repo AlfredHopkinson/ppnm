@@ -1,0 +1,21 @@
+set term pdf
+set multiplot
+set width 6
+set xlabel "$x$"
+set ylabel "$y$"
+set xrange [0:6.3]
+set output "cos.pdf"
+
+
+
+set title "Example of the subspline for cos(x) compared with cos(x)"
+plot cos(x) title "cos(x)" \
+,"cospoint_out.txt" using 1:2 with points title "Generated points" \
+,"cos_out.txt" using 1:2 with lines lw 2 lt 2 title "Cubic sub-spline"\
+
+set origin 9,0
+set title "The cubic-subspline compared with a Akima sub-spline"
+plot "cospoint_out.txt" using 1:2 with points title "Generated points" \
+,"cos_out.txt" using 1:2 with lines title "Cubic sub-spline"\
+,"cos_out.txt" using 1:3 with lines lw 2 lt 2 title "Akima sub-spline"\
+
