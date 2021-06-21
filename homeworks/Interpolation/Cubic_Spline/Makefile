@@ -6,7 +6,7 @@ LDLIBS += $(shell gsl-config --libs)
  
 
 #cubic.out.txt: cubic
-#	./$< > $@
+#./$< > $@
 
 
 cubic_interpolation.pyxplot.png: plots.out.txt cub.out.txt Makefile

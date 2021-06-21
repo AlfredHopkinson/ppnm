@@ -70,11 +70,12 @@ double cubic_spline_eval(cubic_spline *s, double z){
 }
 
 //now basically use the int and deriv basis from the quad here
+//I was an idiot here and got the equations wrong but I caught the mistake
 double cspline_derivitive(cubic_spline *s, double z){
 	assert (z>=s->x[0] && z<=s->x[s->n-1]); 
 	int i = binsearch(s->n,s->x,z);
 	double dx = z - s->x[i];
-	return s->b[i] + 2*s->c[i]*dx;
+	return s->b[i] + 2*s->c[i]*dx+3*s->d[i]*dx*dx;
 }
 
 double cspline_integ(cubic_spline *s, double z){
@@ -87,7 +88,7 @@ double cspline_integ(cubic_spline *s, double z){
 		integ += dx*(s->y[j] + dx*(s->b[j]/2 + dx*s->c[j]/3));
 	}
 	dx=z-s->x[i];
-	integ += dx*(s->y[i]+dx*(s->b[i]/2+dx*s->c[i]/3));
+	integ += dx*(s->y[i]+dx*(s->b[i]/2+dx*s->c[i]/3+dx*dx*s->d[i]/4));
 	return integ;
 }
 
