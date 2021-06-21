@@ -181,8 +181,8 @@ double cubic_spline_deriv(cubic_spline *cs, double z){
 
 
 // took the integration one in basic form from the cubic spline from the start of the homeworks
-int  cubic_spline_integ(cubic_spline *cs, double z){
-	int i = binsearch(cs->n,cs->x,z);
+double  cubic_spline_integ(cubic_spline *cs, double z){
+	int i = binsearch(cs->n,cs->x,z); // used bindearch again maybe should have just used it from the beginning
 	double integ =0;
 	double h;
 	for (int j = 0; j < i; j++){
