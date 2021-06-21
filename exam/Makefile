@@ -3,36 +3,36 @@ CFLAGS = -Wall -O1 -std=gnu11
 CFLAGS += $(shell /usr/bin/gsl-config --cflags)
 LDLIBS += $(shell /usr/bin/gsl-config --libs)
 
-#report.pdf: report.tex 
-#	pdflatex $<
-#	pdflatex $<
-#	bibtex $<
-#	pdflatex $<
+report.pdf: report.tex 
+	pdflatex $<
+	pdflatex $<
+	bibtex $<
+	pdflatex $<
 
-#fig-gpl.tex : fig-gpl.gpi out.data.txt
-#	gnuplot $<
+cos.pdf: cos.gpi cos_out.txt
+	pyxplot $<
 
-#cos.pdf: cos.gpi cos_out.txt
-#	pyxplot $<
+intder.pdf: intder.gpi
+	pyxplot $<
 
 
 
-#default: out.txt
+default: out.txt
 	
-#main: main.o 
+main: main.o 
 
-#out.txt:main
-#	./$< > out.txt
-
-
-#.PHONEY:clean
-#clean:	
-#	$(RM) main.o main out.txt simple_points.txt simple_out.txt cospoint_out.txt cos_out.txt 
+out.txt:main
+	./$< > out.txt
 
 
+.PHONEY:clean
+clean:	
+	$(RM) main.o main out.txt simple_points.txt simple_out.txt cospoint_out.txt cos_out.txt 
 
-#Simple.pyxplot.png: out.txt simple_out.txt
-#	echo '\
+
+
+Simple.pyxplot.png: out.txt simple_out.txt
+	echo '\
 	set terminal png;\
 	set output "$@";\
 	set xlabel "x";\
@@ -45,8 +45,8 @@ LDLIBS += $(shell /usr/bin/gsl-config --libs)
 	' | tee test.gpi | pyxplot
 
 
-#cos.pyxplot.png: out.txt cos_out.txt cospoint_out.txt
-#	echo '\
+cos.pyxplot.png: out.txt cos_out.txt cospoint_out.txt
+	echo '\
 	set terminal png;\
 	set output "$@";\
 	set xlabel "x";\
@@ -60,8 +60,8 @@ LDLIBS += $(shell /usr/bin/gsl-config --libs)
 	' | tee test.gpi | pyxplot
 
 
-#deriv.pyxplot.png: out.txt intder.txt
-#	echo '\
+deriv.pyxplot.png: out.txt intder.txt
+	echo '\
 	set terminal png;\
 	set output "$@";\
 	set xlabel "x";\
@@ -71,8 +71,8 @@ LDLIBS += $(shell /usr/bin/gsl-config --libs)
 	"intder.txt" using 1:2 with line title "Derivitive"\
 	' | tee test.gpi | pyxplot
 
-#integ.pyxplot.png: out.txt intder.txt
-#	echo '\
+integ.pyxplot.png: out.txt intder.txt
+	echo '\
 	set terminal png;\
 	set output "$@";\
 	set xlabel "x";\
@@ -95,12 +95,6 @@ mix.pyxplot.png: intder.txt cos_out.txt cospoint_out.txt
 	,"intder.txt" using 1:2 with line title "derivitive"\
 	,"intder.txt" using 1:3 with line lw 2 lt 2 title "integral"\
 	' | tee test.gpi | pyxplot
-
-
-
-
-
-
 
 
 test:

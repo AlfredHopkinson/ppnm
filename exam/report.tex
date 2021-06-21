@@ -8,7 +8,7 @@
 \maketitle
 
 \begin{Abstract}
-Introduce the document here
+	This report details the implimentation of a cubic sub-spline for data with derivitives. It will explain how the sub-spline is made and the conditions and coefficients used to make it. The results of this will then be demonstrated using a simple cos(x) function as then the cubic sub-spline can be easily compared to this. After the derivatie and integral of the sub-spline was found and also plotted.
 \end{abstract}
 
 \section{Introduction to sub-splines}
@@ -67,7 +67,22 @@ This example can be seen in figure (\ref{cos}).
 As can be seen here both my cubic sub-spline and the Akima sub-spline fit the simple cos(x) points well and do a good job as splines without any wiggles.
 
 \section{derivitive and integral}
-Once this was done I found the derivitive and integral of the spline.
+Once this was done I found the derivitive and integral of the spline.THis was done using similar methods to the interpolation homework. Binsearch was used to get an interval and then either the differentiated equation (\ref{diff}) or intergrated equation (\ref{int}) was returned. This method worked and produced figure (\ref{intder}). As you would expext for a sub-spline that should be showing a cos(x) line the derivitive and integral are both sin(x) functions and show that the derivitive and integral of the spline work.
+\begin{equation}\label{diff}
+	\ derivitive=b_i+2c_i(x-x_i)+3d_i(x-x_i)^2 \;.
+\end{equation}
+
+\begin{equation}\label{int}
+	\ integral=y_i(x-x_i)+\frac{b_i(x-x_i)^2}{2}+\frac{c_i(x-x_i)^3}{3}+\frac{d_i(x-x_i)^4}{4} \;.
+\end{equation}
+
+\begin{figure}[h]
+\begin{center}
+\label{intder}
+\includegraphics{intder.pdf}
+\caption{A plot of the cubic sub-spline, its derivitive and its integral.}
+\end{center}
+\end{figure}
 
 \begin{thebibliography}{H}
 \bibitem{Dmitri} Fedorov, D.V. (2021), "Introduction to numerical methods",

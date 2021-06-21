@@ -12,7 +12,7 @@
 //#include"spline.h"
 
 
-
+//taken from the previous interpolation homework
 int binsearch(int n, double* x, double z){/* locates the interval for z by bisection */ 
 	int i=0, j=n-1;
 	while(j-i>1){
@@ -109,6 +109,7 @@ cubic_spline* cubic_spline_alloc(int n, double *x, double *y, double *dy){
 	return cs;
 }
 */
+// previous didnt work so will start afreash from the Akima example
 typedef struct {int n; double *x,*y,*dy,*b,*c,*d;} cubic_spline;
 cubic_spline* cubic_spline_alloc(int n, double *x, double *y, double *dy){
 	double h[n-1],p[n-1],dp[n-1];
@@ -251,12 +252,6 @@ int main(){
 		dyc[i] = -sin(xc[i]);
 	
 	
-//	for (i=0;i<nn;i++){
-//		for(int q=0;q<nn;q+=ww){
-//		xc[i] = 2*M_PI*i/nn;
-//			xc[i] = 2*M_PI*q/nn;
-//			yc[i] = cos(xc[i]);
-//			dyc[i] = -sin(xc[i]);
 		fprintf(check,"%10g %10g %10g\n",xc[i],yc[i],dyc[i]);
 		
 	}
