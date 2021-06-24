@@ -1,9 +1,8 @@
 Simple check to start
 
-the root of x^3 is 3.47822e-05
-
 The roots of Rosenbrock's valley function
 
 
 The roots of the gradient of the Rosenbrock function equals = 
          1         1
+The min value for this function is found at (1,1) which shows that Newtons method is finding the roots correctly
