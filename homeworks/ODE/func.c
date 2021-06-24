@@ -74,6 +74,7 @@ int driver(
 	gsl_vector* err
 	
 ){
+	
 	int k = ya->size;
 	double t = a; //this will be the starting point  coming back to this added in a parint to show the starting point want working take out later
 	printf("%10g ",t);

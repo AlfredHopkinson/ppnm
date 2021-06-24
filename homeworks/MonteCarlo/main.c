@@ -23,11 +23,14 @@
 //return result;
 //}
 
-//Make a random first
-void randomx(int dim, double *a, double *b, double *x){
-	for(int i=0;i<dim;i++){x[i]=a[i]+RND*(b[i]-a[i]);}
+//Make a random first template in chapter
+void rand(int d, double *a, double *b, double *x){
+	for(int i=0;i<d;i++){
+		x[i]=a[i]+RND*(b[i]-a[i]);
+	}
 }
 
+//using the chapter template this time
 void plainmc(int dim,double f(int dim,double* x),double* a,double* b,int N, double*result, double*error){
 	double V=1;
 	for (int i=0;i<dim;i++){
@@ -35,7 +38,7 @@ void plainmc(int dim,double f(int dim,double* x),double* a,double* b,int N, doub
 	}
 	double sum=0, sum2=0,fx,x[dim];
 	for(int i=0;i<N;i++){
-		randomx(dim,a,b,x);
+		rand(dim,a,b,x);
 		fx=f(dim,x);
 		sum+=fx;
 		sum2+=fx*fx;
