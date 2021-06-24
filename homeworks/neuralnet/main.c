@@ -59,27 +59,19 @@ double cf (gsl_vector * c){
 
 
 //for future me I had a lot of difficulty here and then debuging was vbery hard. the spaces serve no purpose it was where I had print functions to make it easy to see the fault. if using for another thing then just ignore these
-
-
+//There is a lot of stuff I tried and didnt work which I have thought abouyt tidying but ended up not doing as it shows the development and is somthing I may come back too later.
 
 																
 int main(){
 	//allocate space for the network
-	int n=3, nn = 50;
-	double a = -3.14, b= 3.14;
+	int n=3, nn = 60;
+	double a = -3.0, b= 3.0;
 //	printf("PART 1\n");
 	//ann* network = ann_alloc(n, activation_func);
 	network = ann_alloc(n,activation_func);
 
 //	printf("PART 2\n");
 //	assign first params
-//	for(int i=0;i<n;i++){
-//		gsl_vector_set(network->params,3*i,a+(b-a)*i/(n-1));
-//		gsl_vector_set(network->params,3*i+1,1);
-//		gsl_vector_set(network->params,3*i+2,1);
-//		
-//		}
-		
 
 		//now I need to make the training and data   *****xs and ys remember******
 //		printf("PART 4\n");
