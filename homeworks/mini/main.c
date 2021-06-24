@@ -118,14 +118,12 @@ void himmelhess(gsl_vector *x, gsl_matrix *H)
 
 void gradient(void (*f)(gsl_vector * x, double * df), gsl_vector * x, gsl_vector * grad) {
 	double fx, faux; int n = x->size;
-	double DELTA = sqrt(DBL_EPSILON);
+	double delt = sqrt(DBL_EPSILON);
 	f(x,&fx);
-	for (int i = 0; i < n; i++) {
-		gsl_vector_set(x,i,gsl_vector_get(x,i)+DELTA);
-		f(x,&faux);
-		faux -= fx;
-		gsl_vector_set(grad,i,faux/DELTA);
-		gsl_vector_set(x,i,gsl_vector_get(x,i)-DELTA);
+	for (int m = 0; m < n; m++) {
+		gsl_vector_set(x,m,gsl_vector_get(x,m)+delt);
+		f(x,&faux); faux -= fx;
+		gsl_vector_set(grad,m,faux/delt); gsl_vector_set(x,m,gsl_vector_get(x,m)-delt);
 	}
 }
 
